@@ -4,42 +4,14 @@
 //
 // Created by 머성이 on 7/3/24.
 //
+
+
 import UIKit
 import SnapKit
-import SwiftUI
 
-
-//음료 정보 텍스트를 담을 클래스
-class CustomCollectionViewCell: UICollectionViewCell {
-    let label: UILabel = {
-        let drink = UILabel()
-        drink.backgroundColor = .white
-        drink.textColor = .black
-        drink.textAlignment = .center
-        drink.font = UIFont.systemFont(ofSize: 14)
-        return drink
-    }()
+class SBMenuController: UIViewController {
     
-    //UICollectionViewCell의 초기화 메서드
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        contentView.addSubview(label)
-        label.snp.makeConstraints { make in
-//make.top.equalTo(SBMenuController.collectionView.snp.bottom).offset(5)
-            make.top.equalToSuperview().offset(150)
-            make.height.equalTo(20) // 텍스트 높이
-            make.width.equalTo(110) // 텍스트 너비
-        }
-        self.backgroundColor = .white
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("*T_T*")
-    }
-}
-
-//컬렉션뷰
-class SBMenuController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    // 컬렉션 뷰 생성
     let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -47,49 +19,103 @@ class SBMenuController: UIViewController, UICollectionViewDataSource, UICollecti
         return cv
     }()
     
-    // 이미지 배열
-    let img = CoffeeList.smoothie_Menu
+    // 카테고리 종류 생성
+    let categories = ["추천메뉴", "커피", "디저트", "스무디", "티", "비추천메뉴"]
     
+    // 카테고리 메뉴 배열
+    var drinks: [[CoffeeList]] = [CoffeeList.recommended_Menu, CoffeeList.coffee_Menu, CoffeeList.dessert_Menu, CoffeeList.smoothie_Menu, CoffeeList.tea_Menu, CoffeeList.do_not_eat_Menu]
     
-    //컬렉션뷰를 뷰에 추가하고 데이터소스 및 델리게이트를 설정
+    var currentCategoryIndex: Int = 0
+    
+    // 로고 이미지 설정
+    lazy var logoImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFit
+        imageView.image = UIImage(named: "logo")
+        return imageView
+    }()
+    
+    // 세그먼트 컨트롤 생성
+    lazy var segmentControl: UISegmentedControl = {
+        let control = UISegmentedControl(items: categories)
+        control.selectedSegmentIndex = 0
+        control.addTarget(self, action: #selector(segmentValueChanged(_:)), for: .valueChanged)
+        control.backgroundColor = .white
+        control.tintColor = .white
+        control.selectedSegmentTintColor = .clear
+        control.apportionsSegmentWidthsByContent = true
+        
+        let normalTextAttributes: [NSAttributedString.Key: Any] = [
+            .font: UIFont.systemFont(ofSize: 14)
+        ]
+        control.setTitleTextAttributes(normalTextAttributes, for: .normal)
+        
+        let selectedTextAttributes: [NSAttributedString.Key: Any] = [
+            .font: UIFont.boldSystemFont(ofSize: 14)
+        ]
+        control.setTitleTextAttributes(selectedTextAttributes, for: .selected)
+        
+        return control
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        //뷰 백그라운드컬러 안 정해주면 안됨!!!!!!!!!!!!!
         view.backgroundColor = .white
-        view.addSubview(collectionView)
+        
         collectionView.dataSource = self
         collectionView.delegate = self
-        configureCollectionView()
+        
+        setupLayout()
     }
     
-    func configureCollectionView() {
-        collectionView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(180)
-            make.leading.equalToSuperview().offset(20)
-            make.trailing.equalToSuperview().offset(-20)
-            make.bottom.equalToSuperview().offset(-20)
+    // 레이아웃 설정
+    private func setupLayout() {
+        [logoImageView, segmentControl, collectionView].forEach {
+            view.addSubview($0)
         }
-        // 셀 등록
+        
+        logoImageView.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(20)
+            $0.centerX.equalToSuperview()
+            $0.width.equalTo(200)
+            $0.height.equalTo(100)
+        }
+        
+        segmentControl.snp.makeConstraints {
+            $0.top.equalTo(logoImageView.snp.bottom).offset(20)
+            $0.left.right.equalToSuperview().inset(20)
+        }
+        
+        collectionView.snp.makeConstraints {
+            $0.top.equalTo(segmentControl.snp.bottom).offset(20)
+            $0.leading.trailing.bottom.equalToSuperview().inset(UIEdgeInsets(top: 0, left: 20, bottom: 20, right: 20))
+        }
         collectionView.register(MenuView.self, forCellWithReuseIdentifier: "img")
     }
     
-    //컬렉션뷰 내 셀 항목(수량)
+    @objc private func segmentValueChanged(_ sender: UISegmentedControl) {
+        currentCategoryIndex = sender.selectedSegmentIndex
+        collectionView.reloadData()
+    }
+}
+
+extension SBMenuController: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return img.count // 예시 항목 개수
+        return drinks[currentCategoryIndex].count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "img", for: indexPath) as! MenuView
-        let menuItem = img[indexPath.item]
+        let menuItem = drinks[currentCategoryIndex][indexPath.item]
         cell.imgView.image = UIImage(named: menuItem.imageName)
+        cell.label.text = "\(menuItem.menuName) - \(menuItem.menuPrice)원"
         return cell
     }
-    
-    
-    
-    // UICollectionViewDelegateFlowLayout 메서드
+}
+
+extension SBMenuController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 110, height: 130) // 텍스트 공간 포함 크기
+        return CGSize(width: 110, height: 130)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
@@ -100,52 +126,3 @@ class SBMenuController: UIViewController, UICollectionViewDataSource, UICollecti
         return 5
     }
 }
-
-
-struct PreView: PreviewProvider {
- static var previews: some View {
-   SBMenuController().toPreview()
- }
-}
-
-#if DEBUG
-extension UIViewController {
-    private struct Preview: UIViewControllerRepresentable {
-        let viewController: UIViewController
-        func makeUIViewController(context: Context) -> UIViewController {
-            return viewController
-        }
-        func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
-        }
-    }
-    func toPreview() -> some View {
-        Preview(viewController: self)
-    }
-}
-
-
-//struct PreView: PreviewProvider {
-//    static var previews: some View {
-//        SBMenuController().toPreview()
-//    }
-//}
-//#if DEBUG
-//extension UIViewController {
-//    private struct Preview: UIViewControllerRepresentable {
-//        let viewController: UIViewController
-//        func makeUIViewController(context: Context) -> UIViewController {
-//            return viewController
-//        }
-//        func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
-//        }
-//    }
-//    func toPreview() -> some View {
-//        Preview(viewController: self)
-//    }
-//}
-//#endif
-
-//MARK: Error 발생 !
-/* 
- Expected #else or #endif at end of conditional compilation block
- */
