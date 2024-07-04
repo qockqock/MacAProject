@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		5F8CCD6F2C367F7100F91F0F /* OrderSheetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F8CCD6E2C367F7100F91F0F /* OrderSheetController.swift */; };
+		5F8CCD712C369F9600F91F0F /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 5F8CCD702C369F9600F91F0F /* SnapKit */; };
 		6B55C31D2C33C91100804DA5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B55C31C2C33C91100804DA5 /* AppDelegate.swift */; };
 		6B55C31F2C33C91100804DA5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B55C31E2C33C91100804DA5 /* SceneDelegate.swift */; };
 		6B55C3212C33C91100804DA5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B55C3202C33C91100804DA5 /* ViewController.swift */; };
@@ -15,7 +16,6 @@
 		6B55C3292C33C91300804DA5 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 6B55C3282C33C91300804DA5 /* Base */; };
 		6B55C3342C33CAA600804DA5 /* SBMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B55C3332C33CAA600804DA5 /* SBMenuController.swift */; };
 		6B55C3362C33CAED00804DA5 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B55C3352C33CAEC00804DA5 /* Model.swift */; };
-		6B55C3392C33CB8300804DA5 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 6B55C3382C33CB8300804DA5 /* SnapKit */; };
 		6B55C3432C35A1B500804DA5 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B55C3422C35A1B500804DA5 /* MenuView.swift */; };
 		A8DA16222C35128E00786E78 /* BottomTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8DA16212C35128E00786E78 /* BottomTabView.swift */; };
 		C25D1FCE2C3425100061418D /* CategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C25D1FCD2C3425100061418D /* CategoryView.swift */; };
@@ -42,7 +42,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6B55C3392C33CB8300804DA5 /* SnapKit in Frameworks */,
+				5F8CCD712C369F9600F91F0F /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -125,7 +125,7 @@
 			);
 			name = MacAProject;
 			packageProductDependencies = (
-				6B55C3382C33CB8300804DA5 /* SnapKit */,
+				5F8CCD702C369F9600F91F0F /* SnapKit */,
 			);
 			productName = MacAProject;
 			productReference = 6B55C3192C33C91100804DA5 /* MacAProject.app */;
@@ -336,7 +336,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = FUB82Y2PRK;
+				DEVELOPMENT_TEAM = 4DWV94Z6J6;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MacAProject/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -364,7 +364,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = FUB82Y2PRK;
+				DEVELOPMENT_TEAM = 4DWV94Z6J6;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MacAProject/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -420,7 +420,7 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		6B55C3382C33CB8300804DA5 /* SnapKit */ = {
+		5F8CCD702C369F9600F91F0F /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 6B55C3372C33CB8300804DA5 /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
