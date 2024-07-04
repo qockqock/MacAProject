@@ -8,38 +8,8 @@ import UIKit
 import SnapKit
 import SwiftUI
 
-
-//음료 정보 텍스트를 담을 클래스
-class CustomCollectionViewCell: UICollectionViewCell {
-    let label: UILabel = {
-        let drink = UILabel()
-        drink.backgroundColor = .white
-        drink.textColor = .black
-        drink.textAlignment = .center
-        drink.font = UIFont.systemFont(ofSize: 14)
-        return drink
-    }()
-    
-    //UICollectionViewCell의 초기화 메서드
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        contentView.addSubview(label)
-        label.snp.makeConstraints { make in
-//make.top.equalTo(SBMenuController.collectionView.snp.bottom).offset(5)
-            make.top.equalToSuperview().offset(150)
-            make.height.equalTo(20) // 텍스트 높이
-            make.width.equalTo(110) // 텍스트 너비
-        }
-        self.backgroundColor = .white
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("*T_T*")
-    }
-}
-
 //컬렉션뷰
-class SBMenuController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+class SBMenuController: UIViewController {
     let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -62,6 +32,8 @@ class SBMenuController: UIViewController, UICollectionViewDataSource, UICollecti
         configureCollectionView()
     }
     
+    
+    // 오토레이아웃
     func configureCollectionView() {
         collectionView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(180)
@@ -72,10 +44,12 @@ class SBMenuController: UIViewController, UICollectionViewDataSource, UICollecti
         // 셀 등록
         collectionView.register(MenuView.self, forCellWithReuseIdentifier: "img")
     }
-    
+}
+
+extension SBMenuController: UICollectionViewDataSource, UICollectionViewDelegate {
     //컬렉션뷰 내 셀 항목(수량)
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return img.count // 예시 항목 개수
+        return img.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -84,9 +58,9 @@ class SBMenuController: UIViewController, UICollectionViewDataSource, UICollecti
         cell.imgView.image = UIImage(named: menuItem.imageName)
         return cell
     }
-    
-    
-    
+}
+
+extension SBMenuController: UICollectionViewDelegateFlowLayout {
     // UICollectionViewDelegateFlowLayout 메서드
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 110, height: 130) // 텍스트 공간 포함 크기
@@ -103,9 +77,9 @@ class SBMenuController: UIViewController, UICollectionViewDataSource, UICollecti
 
 
 struct PreView: PreviewProvider {
- static var previews: some View {
-   SBMenuController().toPreview()
- }
+    static var previews: some View {
+        SBMenuController().toPreview()
+    }
 }
 
 #if DEBUG
@@ -122,30 +96,4 @@ extension UIViewController {
         Preview(viewController: self)
     }
 }
-
-
-//struct PreView: PreviewProvider {
-//    static var previews: some View {
-//        SBMenuController().toPreview()
-//    }
-//}
-//#if DEBUG
-//extension UIViewController {
-//    private struct Preview: UIViewControllerRepresentable {
-//        let viewController: UIViewController
-//        func makeUIViewController(context: Context) -> UIViewController {
-//            return viewController
-//        }
-//        func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
-//        }
-//    }
-//    func toPreview() -> some View {
-//        Preview(viewController: self)
-//    }
-//}
-//#endif
-
-//MARK: Error 발생 !
-/* 
- Expected #else or #endif at end of conditional compilation block
- */
+#endif
