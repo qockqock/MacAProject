@@ -56,6 +56,7 @@ extension SBMenuController: UICollectionViewDataSource, UICollectionViewDelegate
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "img", for: indexPath) as! MenuView
         let menuItem = img[indexPath.item]
         cell.imgView.image = UIImage(named: menuItem.imageName)
+        cell.label.text = "Item \(indexPath.row)"
         return cell
     }
 }
