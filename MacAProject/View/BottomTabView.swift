@@ -9,5 +9,5 @@ import UIKit
 import SnapKit
 
 class BottomTabView:UIView {
-    d
+    
 }
