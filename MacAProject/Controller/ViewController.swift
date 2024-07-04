@@ -2,38 +2,50 @@
 
 import UIKit
 import SnapKit
+import SwiftUI
 
 class ViewController: UIViewController {
     
-    let coffeeListView = CategoryView()
+    let menuController = SBMenuController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = .white
         
-        setupCoffeeListView()
+        setupMenuController()
     }
     
-    private func setupCoffeeListView() {
-        coffeeListView.delegate = self
-        view.addSubview(coffeeListView)
-        coffeeListView.snp.makeConstraints { make in
-            make.edges.equalToSuperview().inset(UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20))
+    private func setupMenuController() {
+        addChild(menuController)
+        view.addSubview(menuController.view)
+        menuController.didMove(toParent: self)
+        
+        menuController.view.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
         }
     }
 }
 
-extension ViewController: CoffeeListViewDelegate {
-    func segmentValueChanged(to index: Int) {
-        coffeeListView.collectionView.reloadData()
-    }
-    
-    func configureCollectionViewConstraints() {
-        // Additional constraints can be added here if needed
-    }
-    
-    func configureCollectionViewAppearance() {
-        coffeeListView.collectionView.backgroundColor = .white
+struct PreView123: PreviewProvider {
+    static var previews: some View {
+        ViewController().toPreview123()
     }
 }
+
+#if DEBUG
+extension UIViewController {
+    private struct Preview: UIViewControllerRepresentable {
+        let viewController: UIViewController
+        func makeUIViewController(context: Context) -> UIViewController {
+            return viewController
+        }
+        func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
+        }
+    }
+    func toPreview123() -> some View {
+        Preview(viewController: self)
+    }
+}
+#endif
+
