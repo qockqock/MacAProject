@@ -204,24 +204,24 @@ class OrderSheetController: UIViewController {
     
 }
 
-// SwiftUI 미리보기 설정
-struct PreView2: PreviewProvider {
-    static var previews: some View {
-        OrderSheetController().toPreview()
-    }
-}
-#if DEBUG
-extension UIViewController {
-    private struct Preview: UIViewControllerRepresentable {
-        let viewController: UIViewController
-        func makeUIViewController(context: Context) -> UIViewController {
-            return viewController
-        }
-        func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
-        }
-    }
-    func toPreview2() -> some View {
-        Preview(viewController: self)
-    }
-}
-#endif
+//// SwiftUI 미리보기 설정
+//struct PreView2: PreviewProvider {
+//    static var previews: some View {
+//        OrderSheetController().toPreview()
+//    }
+//}
+//#if DEBUG
+//extension UIViewController {
+//    private struct Preview: UIViewControllerRepresentable {
+//        let viewController: UIViewController
+//        func makeUIViewController(context: Context) -> UIViewController {
+//            return viewController
+//        }
+//        func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
+//        }
+//    }
+//    func toPreview2() -> some View {
+//        Preview(viewController: self)
+//    }
+//}
+//#endif
