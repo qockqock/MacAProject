@@ -38,7 +38,7 @@ class OrderSheetController: UIViewController {
         // 버튼을 뷰에 추가하고 오토레이아웃 설정
         self.view.addSubview(orderListButton)
         orderListButton.snp.makeConstraints {
-            $0.bottom.equalToSuperview().inset(30)
+            $0.bottom.equalToSuperview().inset(60)
             $0.height.equalTo(65)
             $0.width.equalTo(350)
             $0.centerX.equalToSuperview()
@@ -73,7 +73,7 @@ class OrderSheetController: UIViewController {
             UIView.animate(withDuration: 0.5) {
                 // 버튼을 초기 위치로 되돌림
                 self.orderListButton.snp.updateConstraints {
-                    $0.bottom.equalToSuperview().inset(30) // 초기 위치로 되돌림
+                    $0.bottom.equalToSuperview().inset(60) // 초기 위치로 되돌림
                 }
                 self.view.layoutIfNeeded() // 제약 조건 업데이트
             }
