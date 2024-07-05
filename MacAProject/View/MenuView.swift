@@ -8,10 +8,6 @@
 import UIKit
 import SnapKit
 
-protocol KHMenuViewDelegate: AnyObject {
-    func segmentValueChanged(to index: Int)
-}
-
 // MARK: - KHMenuView : 로고, 세그먼트 컨트롤 & 커스텀 관련, 컬렉션 뷰 관련 내용
 class KHMenuView: UIView {
     // 로고 이미지 설정
@@ -131,15 +127,27 @@ class KHMenuView: UIView {
     }
 }
 
-// MARK: - SBMenuCell : 컬렉션 뷰의 셀을 담당
+// MARK: - SBMenuCell : 컬렉션 뷰의 셀을 담당, 이미지 탭 기능
 class SBMenuCell: UICollectionViewCell {
+    var coffeeList: CoffeeList? {
+        didSet {
+            guard let coffee = coffeeList else { return }
+            imgView.image = UIImage(named: coffee.imageName)
+            beverageLabel.text = coffee.menuName
+            priceLabel.text = coffee.menuPrice.numberFormat()
+        }
+    }
+    
     let imgView = UIImageView()
     let beverageLabel = UILabel()
     let priceLabel = UILabel()
     
+    var imageTapAction: (() -> Void)? // 이미지 클릭 액션 클로저
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupViews()
+        setupGesture()
     }
     
     required init?(coder: NSCoder) {
@@ -168,5 +176,22 @@ class SBMenuCell: UICollectionViewCell {
             $0.leading.trailing.bottom.equalToSuperview()
         }
     }
+    
+    private func setupGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(imageTapped))
+        imgView.addGestureRecognizer(tapGesture)
+        imgView.isUserInteractionEnabled = true
+    }
+    
+    @objc func imageTapped() {
+        imageTapAction?() // 이미지 클릭 시 클로저 호출
+    }
 }
 
+extension Int {
+    func numberFormat() -> String {
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal
+        return numberFormatter.string(from: NSNumber(value: self)) ?? "\(self)"
+    }
+}
