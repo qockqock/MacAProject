@@ -96,7 +96,7 @@ class KHMenuView: UIView {
     }
     
     private func setupLayout() {
-        [logoImageView, segmentControl, collectionView, underlineView, orderView!].forEach {
+        [logoImageView, segmentControl, collectionView, underlineView].forEach {
             addSubview($0)
         }
         
@@ -129,11 +129,17 @@ class KHMenuView: UIView {
             $0.top.equalTo(segmentControl.snp.bottom).offset(30)
             $0.leading.trailing.bottom.equalToSuperview().inset(UIEdgeInsets(top: 0, left: 20, bottom: 30, right: 20))
         }
-        orderView!.snp.makeConstraints {
-            $0.bottom.equalToSuperview().inset(20)
-            $0.centerX.equalToSuperview()
-        }
+        
+        // orderView Constraints - 마지막에 추가
+//        orderView!.snp.makeConstraints {
+//            $0.bottom.equalToSuperview().inset(20)
+//            $0.centerX.equalToSuperview()
+//        }
+        
         collectionView.register(SBMenuCell.self, forCellWithReuseIdentifier: "img")
+        
+        // 사용자 상호작용 가능 설정
+        orderView!.isUserInteractionEnabled = true
     }
 }
 
@@ -175,4 +181,3 @@ class SBMenuCell: UICollectionViewCell {
         }
     }
 }
-

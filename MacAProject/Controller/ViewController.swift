@@ -8,24 +8,37 @@ class ViewController: UIViewController {
     
     let menuController = SBMenuController()
     let orderController  = OrderSheetController()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         print("Called ViewController - Run App")
         view.backgroundColor = .white
         
-        setupMenuController()
-        
+        setupControllers()
     }
     
-    private func setupMenuController() {
+    private func setupControllers() {
+        // menuController 추가 및 제약 조건 설정
         addChild(menuController)
         view.addSubview(menuController.view)
         menuController.didMove(toParent: self)
         
+        // orderController 추가 및 제약 조건 설정
+        addChild(orderController)
+        view.addSubview(orderController.view)
+        orderController.didMove(toParent: self)
+        
+        // menuController 제약 조건 설정
         menuController.view.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.top.leading.trailing.equalToSuperview()
+            make.bottom.equalTo(orderController.view.snp.top)
         }
-      
+        
+        // orderController 제약 조건 설정
+        orderController.view.snp.makeConstraints { make in
+            make.leading.trailing.bottom.equalToSuperview()
+            make.height.equalTo(200) // 원하는 높이 설정
+        }
     }
 }
 
