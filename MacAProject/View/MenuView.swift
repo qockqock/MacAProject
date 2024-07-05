@@ -68,6 +68,8 @@ class KHMenuView: UIView {
     
     weak var delegate: KHMenuViewDelegate?
     
+    let orderView = OrderSheetController().view
+    
     @objc func segmentValueChanged(_ sender: UISegmentedControl) {
         delegate?.segmentValueChanged(to: sender.selectedSegmentIndex)
     }
@@ -94,7 +96,7 @@ class KHMenuView: UIView {
     }
     
     private func setupLayout() {
-        [logoImageView, segmentControl, collectionView, underlineView].forEach {
+        [logoImageView, segmentControl, collectionView, underlineView, orderView!].forEach {
             addSubview($0)
         }
         
@@ -126,6 +128,10 @@ class KHMenuView: UIView {
         collectionView.snp.makeConstraints {
             $0.top.equalTo(segmentControl.snp.bottom).offset(30)
             $0.leading.trailing.bottom.equalToSuperview().inset(UIEdgeInsets(top: 0, left: 20, bottom: 30, right: 20))
+        }
+        orderView!.snp.makeConstraints {
+            $0.bottom.equalToSuperview().inset(20)
+            $0.centerX.equalToSuperview()
         }
         collectionView.register(SBMenuCell.self, forCellWithReuseIdentifier: "img")
     }

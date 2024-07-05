@@ -20,15 +20,12 @@ class ViewController: UIViewController {
     private func setupMenuController() {
         addChild(menuController)
         view.addSubview(menuController.view)
-        view.addSubview(orderController.view)
         menuController.didMove(toParent: self)
         
         menuController.view.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-        orderController.view.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-        }
+      
     }
 }
 
