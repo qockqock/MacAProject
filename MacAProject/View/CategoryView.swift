@@ -11,7 +11,7 @@ class CategoryView: UIView {
     
     weak var delegate: CoffeeListViewDelegate?
     
-    private let categories = ["추천메뉴", "커피", "디저트", "스무디", "티", "비추천메뉴"]
+    private let categories = ["추천메뉴", "커피", "디저트", "스무디", "티", "왜먹어?"]
     
     // 컬렉션 뷰 데이터를 담을 배열
     var drinks: [[CoffeeList]] = []
@@ -28,12 +28,14 @@ class CategoryView: UIView {
         
         // 폰트 설정
         let normalTextAttributes: [NSAttributedString.Key: Any] = [
-            .font: UIFont.systemFont(ofSize: 14)
+            .font: UIFont.systemFont(ofSize: 14),
+            .foregroundColor: UIColor.black
         ]
         control.setTitleTextAttributes(normalTextAttributes, for: .normal)
         
         let selectedTextAttributes: [NSAttributedString.Key: Any] = [
-            .font: UIFont.boldSystemFont(ofSize: 14)
+            .font: UIFont.boldSystemFont(ofSize: 14),
+            .foregroundColor: UIColor.black
         ]
         control.setTitleTextAttributes(selectedTextAttributes, for: .selected)
         
