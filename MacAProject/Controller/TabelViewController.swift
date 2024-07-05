@@ -1,10 +1,3 @@
-//
-//  TabelViewController.swift
-//  MacAProject
-//
-//  Created by DEUKRYEONG LEE on 7/5/24.
-//
-
 import UIKit
 import SnapKit
 import SwiftUI
@@ -16,31 +9,28 @@ class TableViewController: UIViewController, UITableViewDataSource, UITableViewD
     private let tableView = UITableView()
     
     var showModal = false
-
+    
+    // 샘플 데이터 배열 추가
+    let sampleData = [
+        ("유니콘 매직 프라페(블루)", 1, 3900),
+        ("유니콘 매직 프라페(레드)", 2, 4000),
+        ("유니콘 매직 프라페(그린)", 1, 4100)
+    ]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // 데이터 소스와 델리게이트 설정
         tableView.dataSource = self
         tableView.delegate = self
-        
-        // 셀 하나하나의 높이 설정
         tableView.rowHeight = 100
+        tableView.register(OrderMakeCell.self, forCellReuseIdentifier: "cellID")
         
-        // 셀을 재사용하기 위해 재사용 식별자를 테이블뷰에 등록
-        tableView.register(MakeCell.self, forCellReuseIdentifier: "cellID")
-        
-        // 테이블뷰 오토레이아웃 설정 메서드 호출
         setupTableviewConstraints()
-        
-        // 결제 버튼 생성 메서드 호출
-        //        paymentButton_Modal()
-        
         paymentButton_Modal()
     }
     
     //MARK: - 모달 내부에 있는 결제 Btn 함수
-    func paymentButton_Modal(){
+    func paymentButton_Modal() {
         let orderListButton = UIButton()
         
         // 버튼의 타이틀, 색상, 배경색, 폰트 설정
@@ -83,7 +73,7 @@ class TableViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
     
     // 테이블뷰 오토레이아웃 설정
-    func setupTableviewConstraints(){
+    func setupTableviewConstraints() {
         view.addSubview(tableView)
         tableView.snp.makeConstraints {
             $0.edges.equalToSuperview()
@@ -92,17 +82,20 @@ class TableViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     // 테이블뷰의 섹션당 셀의 개수 설정
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 7 // 실제 데이터로 변경 필요
+        return sampleData.count
     }
     
     // 셀의 내용을 설정하는 메서드
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "cellID", for: indexPath) as? MakeCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "cellID", for: indexPath) as? OrderMakeCell else {
             return UITableViewCell()
         }
         
-        // 셀 구성 및 선택 스타일 설정
-        cell.configure()
+        let data = sampleData[indexPath.row]
+        cell.productNameLabel.text = data.0
+        cell.quantityLabel.text = "\(data.1)개"
+        cell.priceLabel.text = "\(data.2)원"
+        
         cell.selectionStyle = .none
         
         return cell
