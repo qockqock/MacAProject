@@ -8,19 +8,21 @@
 
 import UIKit
 import SnapKit
+import SwiftUI
 
 class SBMenuController: UIViewController {
     
     // 컬렉션 뷰 생성
     let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
+        layout.itemSize.height = 100
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.backgroundColor = .white
         return cv
     }()
     
     // 카테고리 종류 생성
-    let categories = ["추천메뉴", "커피", "디저트", "스무디", "티", "비추천메뉴"]
+    let categories = ["추천메뉴", "커피", "디저트", "스무디", "티", "왜먹어?"]
     
     // 카테고리 메뉴 배열
     var drinks: [[CoffeeList]] = [CoffeeList.recommended_Menu, CoffeeList.coffee_Menu, CoffeeList.dessert_Menu, CoffeeList.smoothie_Menu, CoffeeList.tea_Menu, CoffeeList.do_not_eat_Menu]
@@ -74,21 +76,24 @@ class SBMenuController: UIViewController {
             view.addSubview($0)
         }
         
+        //Logo Constraints
         logoImageView.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(20)
+            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(-10) //솔비 offset 값 변경
             $0.centerX.equalToSuperview()
-            $0.width.equalTo(200)
+            $0.width.equalTo(255) //솔비 변경
             $0.height.equalTo(100)
         }
         
+        //카테고리 Constraints
         segmentControl.snp.makeConstraints {
-            $0.top.equalTo(logoImageView.snp.bottom).offset(20)
+            $0.top.equalTo(logoImageView.snp.bottom).offset(5) //솔비 offset 값 변경
             $0.left.right.equalToSuperview().inset(20)
         }
         
+        //컬렉션뷰(메뉴 리스트) Constraints
         collectionView.snp.makeConstraints {
-            $0.top.equalTo(segmentControl.snp.bottom).offset(20)
-            $0.leading.trailing.bottom.equalToSuperview().inset(UIEdgeInsets(top: 0, left: 20, bottom: 20, right: 20))
+            $0.top.equalTo(segmentControl.snp.bottom).offset(30)
+            $0.leading.trailing.bottom.equalToSuperview().inset(UIEdgeInsets(top: 0, left: 20, bottom: 30, right: 20))
         }
         collectionView.register(MenuView.self, forCellWithReuseIdentifier: "img")
     }
@@ -108,21 +113,48 @@ extension SBMenuController: UICollectionViewDataSource, UICollectionViewDelegate
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "img", for: indexPath) as! MenuView
         let menuItem = drinks[currentCategoryIndex][indexPath.item]
         cell.imgView.image = UIImage(named: menuItem.imageName)
-        cell.label.text = "\(menuItem.menuName) - \(menuItem.menuPrice)원"
+        cell.beverageLabel.text = "\(menuItem.menuName)"
+        cell.priceLabel.text = "\(menuItem.menuPrice)"
         return cell
     }
 }
 
 extension SBMenuController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 110, height: 130)
+        //셀 크기 조정
+        return CGSize(width: 117, height: 180)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 80
+        //셀 위 아래 간격
+        return 20
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 5
+        //셀 좌 우 간격
+        return 0
     }
 }
+
+
+struct PreView123: PreviewProvider {
+    static var previews: some View {
+        ViewController().toPreview123()
+    }
+}
+
+#if DEBUG
+extension UIViewController {
+    private struct Preview: UIViewControllerRepresentable {
+        let viewController: UIViewController
+        func makeUIViewController(context: Context) -> UIViewController {
+            return viewController
+        }
+        func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
+        }
+    }
+    func toPreview123() -> some View {
+        Preview(viewController: self)
+    }
+}
+#endif
