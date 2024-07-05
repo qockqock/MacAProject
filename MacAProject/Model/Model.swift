@@ -75,7 +75,7 @@ extension CoffeeList{
     CoffeeList(imageName: "earlGrey_Tea", menuName: "얼그레이티", menuPrice: 5500),
     CoffeeList(imageName: "green_Tea", menuName: "녹차", menuPrice: 4800),
     CoffeeList(imageName: "honey_Grapefruit_BlackTea", menuName: "허니자몽블랙티", menuPrice: 4900),
-    CoffeeList(imageName: "", menuName: "로얄밀크티", menuPrice: 5000)
+    CoffeeList(imageName: "royal_Milk_Tea", menuName: "로얄밀크티", menuPrice: 5000)
   ]
     
 //  static let pong_crush_Menu = [
