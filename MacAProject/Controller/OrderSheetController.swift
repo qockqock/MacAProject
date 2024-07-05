@@ -6,8 +6,8 @@
 //
 
 import UIKit
-import SwiftUI
 import SnapKit
+
 //MARK: - OrderSheetController 클래스: 주문 내역 버튼을 관리하는 클래스
 class OrderSheetController: UIViewController {
     //tvc 클래스 변수로 변환
@@ -16,14 +16,15 @@ class OrderSheetController: UIViewController {
     let orderListButton = UIButton()
     
     var showModal = false
+    
     //MARK: - override func
     override func viewDidLoad() {
         super.viewDidLoad()
         
         paymentButton_Home()
         addNotiObserver()
-        
     }
+    
     // 홈에 있는 주문하기 버튼
     func paymentButton_Home() {
         
@@ -44,102 +45,40 @@ class OrderSheetController: UIViewController {
             $0.centerX.equalToSuperview()
         }
         
-        // 버튼 클릭 시 ShowOderList 메서드를 호출하도록 설정
-        orderListButton.addTarget(self, action: #selector(ShowOderList), for: .touchDown)
-    }
-    private func addNotiObserver() {
-        NotificationCenter.default.addObserver(self,selector:#selector(showOrderButton(_:)), name: NSNotification.Name("notiData"),object: nil)
+        // 버튼 클릭 시 모달 창 띄우기
+        orderListButton.addTarget(self, action: #selector(showOrderListModal), for: .touchDown)
     }
     
-    //버튼 숨기기 에니메이션
-    func hideOrderButton() {
-        UIView.animate(withDuration: 0.5) {
-            // 버튼을 화면 아래로 이동
-            self.orderListButton.snp.updateConstraints {
-                $0.bottom.equalToSuperview().inset(-80) // 화면 바깥으로 이동
-            }
-            self.view.layoutIfNeeded() // 제약 조건 업데이트
-        }
+    // 알림 옵저버 추가
+    func addNotiObserver() {
+        NotificationCenter.default.addObserver(self, selector: #selector(self.didReceiveNoti(_:)), name: NSNotification.Name("notiData"), object: nil)
     }
-    // 버튼 제자리 에니메이션
     
-    @objc 
-    func showOrderButton(_ notification: Notification) {
-        
+    // 알림을 받았을 때 호출되는 메서드
+    @objc
+    func didReceiveNoti(_ notification: Notification) {
         if let showModal = notification.userInfo?["showModal"] as? Bool {
             self.showModal = showModal
-            print("showModal: \(showModal)")
         }
-            UIView.animate(withDuration: 0.5) {
-                // 버튼을 초기 위치로 되돌림
-                self.orderListButton.snp.updateConstraints {
-                    $0.bottom.equalToSuperview().inset(60) // 초기 위치로 되돌림
-                }
-                self.view.layoutIfNeeded() // 제약 조건 업데이트
-            }
     }
     
-    
-    //MARK: - 주문 내역 모달을 표시하는 메서드
+    // 모달 창 띄우기
     @objc
-    func ShowOderList() {
-        //MARK: - 모달 생성, 설정
-        if let orderSheet = tvc.sheetPresentationController {
-            orderSheet.detents = [.medium()]
-            orderSheet.preferredCornerRadius = 20
-            orderSheet.prefersGrabberVisible = true
-        }
-        self.present(tvc, animated: true)
-        hideOrderButton()
-    }
-    
-    //MARK: - 토스트 알림
-    func showToast() {
-        
-        let toastLabel = UILabel()
-        toastLabel.backgroundColor = UIColor.black.withAlphaComponent(0.7)
-        toastLabel.textColor = UIColor.white
-        toastLabel.font = UIFont.systemFont(ofSize: 17.0)
-        toastLabel.textAlignment = .center
-        toastLabel.text = "장바구니에 메뉴를 추가했습니다"
-        toastLabel.alpha = 1.0
-        toastLabel.layer.cornerRadius = 7
-        toastLabel.clipsToBounds  =  true
-        
-        self.view.addSubview(toastLabel)
-        
-        UIView.animate(withDuration: 0.9, delay: 0.6, options: .curveEaseOut, animations: {
-            toastLabel.alpha = 0.0
-        }, completion: {(isCompleted) in
-            toastLabel.removeFromSuperview()
-        })
-        
-        toastLabel.snp.makeConstraints {
-            $0.center.equalToSuperview()
-            $0.width.equalTo(280)
-            $0.height.equalTo(50)
+    func showOrderListModal() {
+        if showModal {
+            let sheetViewController = tvc
+            sheetViewController.modalPresentationStyle = .automatic
+            self.present(sheetViewController, animated: true, completion: nil)
+        } else {
+            print("아직 선택된 상품 없음.")
+            
+            let sheetViewController = tvc
+            sheetViewController.modalPresentationStyle = .automatic
+            self.present(sheetViewController, animated: true, completion: nil)
+            
+//            let alert = UIAlertController(title: "Error", message: "선택된 상품이 없습니다.", preferredStyle: .alert)
+//            alert.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
+//            self.present(alert, animated: true, completion: nil)
         }
     }
 }
-
-//// SwiftUI 미리보기 설정
-//struct PreView2: PreviewProvider {
-//    static var previews: some View {
-//        OrderSheetController().toPreview()
-//    }
-//}
-//#if DEBUG
-//extension UIViewController {
-//    private struct Preview: UIViewControllerRepresentable {
-//        let viewController: UIViewController
-//        func makeUIViewController(context: Context) -> UIViewController {
-//            return viewController
-//        }
-//        func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
-//        }
-//    }
-//    func toPreview2() -> some View {
-//        Preview(viewController: self)
-//    }
-//}
-//#endif

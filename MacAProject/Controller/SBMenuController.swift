@@ -10,10 +10,6 @@ import UIKit
 import SnapKit
 import SwiftUI
 
-protocol SBMenuCollectionViewCellDelegate: AnyObject {
-    func didSelectCountButton(_ cell: CoffeeList)
-}
-
 class SBMenuController: UIViewController {
     
     // 카테고리 메뉴 배열
@@ -81,8 +77,13 @@ extension SBMenuController: UICollectionViewDataSource, UICollectionViewDelegate
             cell.priceLabel.text = "\(formattedPrice)원"
         } else {
             cell.priceLabel.text = "\(menuItem.menuPrice)원"
+        cell.beverageLabel.text = "\(menuItem.menuName)"
+        cell.priceLabel.text = "\(menuItem.menuPrice)"
+        
+        cell.imageTapAction = {
+            print(cell.beverageLabel.text!)
         }
-//        cell.priceLabel.text = "\(menuItem.menuPrice)원"
+        
         return cell
     }
 }
