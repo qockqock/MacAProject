@@ -58,6 +58,7 @@ extension CoffeeList{
     CoffeeList(imageName: "peach_Ice_Tea", menuName: "복숭아 아이스티", menuPrice: "4500"),
     CoffeeList(imageName: "shine_Musket_Green", menuName: "샤인머스캣그린주스", menuPrice: "5200"),
     CoffeeList(imageName: "strawberry_Banana", menuName: "딸기바나나주스", menuPrice: "5300")
+    
   ]
     
   static let do_not_eat_Menu = [

@@ -62,6 +62,7 @@ class SBMenuController: UIViewController {
     }
 }
 
+
 extension SBMenuController: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return drinks[currentCategoryIndex].count
@@ -72,14 +73,12 @@ extension SBMenuController: UICollectionViewDataSource, UICollectionViewDelegate
         let menuItem = drinks[currentCategoryIndex][indexPath.item]
         cell.imgView.image = UIImage(named: menuItem.imageName)
         cell.beverageLabel.text = menuItem.menuName.replacingOccurrences(of: " ", with: "\n")
-//        cell.beverageLabel.text = "\(menuItem.menuName)"
+        //        cell.beverageLabel.text = "\(menuItem.menuName)"
         if let formattedPrice = formatPrice(menuItem.menuPrice) {
             cell.priceLabel.text = "\(formattedPrice)원"
         } else {
             cell.priceLabel.text = "\(menuItem.menuPrice)원"
-        cell.beverageLabel.text = "\(menuItem.menuName)"
-        cell.priceLabel.text = "\(menuItem.menuPrice)"
-        
+        }
         cell.imageTapAction = {
             print(cell.beverageLabel.text!)
         }

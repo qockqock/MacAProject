@@ -145,7 +145,7 @@ class SBMenuCell: UICollectionViewCell {
             guard let coffee = coffeeList else { return }
             imgView.image = UIImage(named: coffee.imageName)
             beverageLabel.text = coffee.menuName
-            priceLabel.text = coffee.menuPrice.numberFormat()
+            priceLabel.text = Int(coffee.menuPrice)!.numberFormat()
         }
     }
     
@@ -174,6 +174,8 @@ class SBMenuCell: UICollectionViewCell {
         pl.font = UIFont.systemFont(ofSize: 14, weight: .bold)
         return pl
     }()
+    
+    var imageTapAction: (() -> Void)? // 이미지 클릭 액션 클로저
     
     override init(frame: CGRect) {
         super.init(frame: frame)
