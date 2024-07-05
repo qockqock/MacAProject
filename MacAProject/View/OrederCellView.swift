@@ -38,53 +38,71 @@ class OrderMakeCell: UITableViewCell {
         contentView.addSubview(deleteButton)
         
         productImageView.contentMode = .scaleAspectFit
-        productNameLabel.font = .systemFont(ofSize: 16)
+        productNameLabel.font = .boldSystemFont(ofSize: 16)
         quantityLabel.font = .systemFont(ofSize: 16)
-        priceLabel.font = .systemFont(ofSize: 16)
+        priceLabel.font = .boldSystemFont(ofSize: 18)
+        priceLabel.textAlignment = .right
         
         addButton.setTitle("+", for: .normal)
+        addButton.layer.cornerRadius = 2
+        addButton.setTitleColor(.white, for: .normal)
+        addButton.backgroundColor = .black
+        addButton.titleLabel?.font = .boldSystemFont(ofSize: 16)
+        
         subtractButton.setTitle("-", for: .normal)
-        deleteButton.setTitle("X", for: .normal)
-        deleteButton.setTitleColor(.red, for: .normal)
+        subtractButton.layer.cornerRadius = 2
+        subtractButton.setTitleColor(.white, for: .normal)
+        subtractButton.backgroundColor = .black
+        subtractButton.titleLabel?.font = .boldSystemFont(ofSize: 16)
+        
+        deleteButton.setTitle("×", for: .normal)
+        deleteButton.layer.cornerRadius = 2
+        deleteButton.setTitleColor(.systemPink, for: .normal)
+        deleteButton.backgroundColor = #colorLiteral(red: 0.8749070764, green: 0.8814653754, blue: 0.9251363873, alpha: 1)
+        deleteButton.titleLabel?.font = .boldSystemFont(ofSize: 16)
+      
     }
     
     func setupConstraints() {
-        productImageView.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(10)
-            make.centerY.equalToSuperview()
-            make.width.height.equalTo(60)
+        productImageView.snp.makeConstraints {
+            $0.leading.equalToSuperview().offset(10)
+            $0.centerY.equalToSuperview()
+            $0.width.height.equalTo(75)
         }
         
-        productNameLabel.snp.makeConstraints { make in
-            make.leading.equalTo(productImageView.snp.trailing).offset(10)
-            make.top.equalToSuperview().offset(10)
+        productNameLabel.snp.makeConstraints {
+            $0.leading.equalTo(productImageView.snp.trailing).offset(10)
+            $0.top.equalToSuperview()
         }
         
-        addButton.snp.makeConstraints { make in
-            make.leading.equalTo(productNameLabel.snp.leading)
-            make.top.equalTo(productNameLabel.snp.bottom).offset(10)
-            make.width.height.equalTo(30)
+        addButton.snp.makeConstraints {
+            $0.leading.equalTo(productNameLabel.snp.leading)
+            $0.top.equalTo(productNameLabel.snp.bottom).offset(10)
+            $0.bottom.equalToSuperview().inset(10)
+            $0.width.height.equalTo(20)
         }
         
-        quantityLabel.snp.makeConstraints { make in
-            make.leading.equalTo(addButton.snp.trailing).offset(10)
-            make.centerY.equalTo(addButton.snp.centerY)
+        quantityLabel.snp.makeConstraints {
+            $0.leading.equalTo(addButton.snp.trailing).offset(10)
+            $0.centerY.equalTo(addButton.snp.centerY)
         }
         
-        subtractButton.snp.makeConstraints { make in
-            make.leading.equalTo(quantityLabel.snp.trailing).offset(10)
-            make.centerY.equalTo(addButton.snp.centerY)
-            make.width.height.equalTo(30)
+        subtractButton.snp.makeConstraints {
+            $0.leading.equalTo(quantityLabel.snp.trailing).offset(10)
+            $0.centerY.equalTo(addButton.snp.centerY)
+            $0.width.height.equalTo(20)
         }
         
-        priceLabel.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(10)
-            make.centerY.equalToSuperview()
+        priceLabel.snp.makeConstraints {
+            $0.trailing.equalToSuperview().inset(25)
+            $0.bottom.equalTo(subtractButton)
+            $0.width.equalTo(80)
         }
         
-        deleteButton.snp.makeConstraints { make in
-            make.trailing.equalTo(priceLabel.snp.leading).offset(-10)
-            make.centerY.equalToSuperview()
+        deleteButton.snp.makeConstraints {
+            $0.trailing.equalToSuperview().inset(25)
+            $0.top.equalToSuperview().inset(15)
+            $0.width.height.equalTo(18)
         }
     }
     

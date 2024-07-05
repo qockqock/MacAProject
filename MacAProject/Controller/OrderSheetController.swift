@@ -30,17 +30,17 @@ class OrderSheetController: UIViewController {
         
         print("called - PaymentButton")
         // 버튼의 타이틀, 색상, 배경색, 폰트 설정
-        orderListButton.setTitle("주문 내역", for: .normal)
+        orderListButton.setTitle("주문 상품", for: .normal)
         orderListButton.setTitleColor(.white, for: .normal)
         orderListButton.backgroundColor = #colorLiteral(red: 0.2734747827, green: 0.1341301203, blue: 0.003133529332, alpha: 1)
-        orderListButton.titleLabel?.font = .boldSystemFont(ofSize: 24)
-        orderListButton.layer.cornerRadius = 15
+        orderListButton.titleLabel?.font = .boldSystemFont(ofSize: 22)
+        orderListButton.layer.cornerRadius = 10
         
         // 버튼을 뷰에 추가하고 오토레이아웃 설정
         self.view.addSubview(orderListButton)
         orderListButton.snp.makeConstraints {
-            $0.bottom.equalToSuperview().inset(60)
-            $0.height.equalTo(65)
+            $0.bottom.equalToSuperview().inset(40)
+            $0.height.equalTo(58)
             $0.width.equalTo(350)
             $0.centerX.equalToSuperview()
         }
@@ -66,19 +66,28 @@ class OrderSheetController: UIViewController {
     @objc
     func showOrderListModal() {
         if showModal {
-            let sheetViewController = tvc
-            sheetViewController.modalPresentationStyle = .automatic
-            self.present(sheetViewController, animated: true, completion: nil)
+            if let sheetViewController = tvc.sheetPresentationController {
+                sheetViewController.detents = [.medium()]
+                sheetViewController.preferredCornerRadius = 20
+            }
+            self.present(tvc, animated: true, completion: nil)
         } else {
             print("아직 선택된 상품 없음.")
+            //지현 수정한 코드
+            if let sheetViewController = tvc.sheetPresentationController {
+                sheetViewController.detents = [.medium()]
+                sheetViewController.preferredCornerRadius = 20
+            }
+            self.present(tvc, animated: true, completion: nil)
             
-            let sheetViewController = tvc
-            sheetViewController.modalPresentationStyle = .automatic
-            self.present(sheetViewController, animated: true, completion: nil)
+            //득령 원래 코드
+//            let sheetViewController = tvc
+//            sheetViewController.modalPresentationStyle = .automatic
+//            self.present(sheetViewController, animated: true, completion: nil)
             
-//            let alert = UIAlertController(title: "Error", message: "선택된 상품이 없습니다.", preferredStyle: .alert)
-//            alert.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
-//            self.present(alert, animated: true, completion: nil)
+            //            let alert = UIAlertController(title: "Error", message: "선택된 상품이 없습니다.", preferredStyle: .alert)
+            //            alert.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
+            //            self.present(alert, animated: true, completion: nil)
         }
     }
 }
