@@ -15,6 +15,7 @@ class TableViewController: UIViewController, UITableViewDataSource, UITableViewD
     // 테이블뷰 인스턴스 생성
     private let tableView = UITableView()
     
+    var showModal = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,7 +71,9 @@ class TableViewController: UIViewController, UITableViewDataSource, UITableViewD
         let closeAction = UIAlertAction(title: "닫기", style: .default) { [self] (action) in
             // 현재 화면을 닫는 동작을 여기서 실행
             self.dismiss(animated: true, completion: nil)
-            // 모달뷰 디스미스
+            showModal = true
+            //노티로 데이터 전달
+            NotificationCenter.default.post(name: NSNotification.Name("notiData"), object:nil, userInfo: ["showModal" : showModal])
         }
         
         alert.addAction(closeAction)

@@ -15,12 +15,14 @@ class OrderSheetController: UIViewController {
     
     let orderListButton = UIButton()
     
-    
+    var showModal = false
     //MARK: - override func
     override func viewDidLoad() {
         super.viewDidLoad()
         
         paymentButton_Home()
+        addNotiObserver()
+        
     }
     // 홈에 있는 주문하기 버튼
     func paymentButton_Home() {
@@ -36,7 +38,7 @@ class OrderSheetController: UIViewController {
         // 버튼을 뷰에 추가하고 오토레이아웃 설정
         self.view.addSubview(orderListButton)
         orderListButton.snp.makeConstraints {
-            $0.bottom.equalToSuperview().inset(30)
+            $0.bottom.equalToSuperview().inset(60)
             $0.height.equalTo(65)
             $0.width.equalTo(350)
             $0.centerX.equalToSuperview()
@@ -45,6 +47,10 @@ class OrderSheetController: UIViewController {
         // 버튼 클릭 시 ShowOderList 메서드를 호출하도록 설정
         orderListButton.addTarget(self, action: #selector(ShowOderList), for: .touchDown)
     }
+    private func addNotiObserver() {
+        NotificationCenter.default.addObserver(self,selector:#selector(showOrderButton(_:)), name: NSNotification.Name("notiData"),object: nil)
+    }
+    
     //버튼 숨기기 에니메이션
     func hideOrderButton() {
         UIView.animate(withDuration: 0.5) {
@@ -56,17 +62,23 @@ class OrderSheetController: UIViewController {
         }
     }
     // 버튼 제자리 에니메이션
-    func showOrderButton(isTrue: Bool) {
-        if isTrue {
+    
+    @objc 
+    func showOrderButton(_ notification: Notification) {
+        
+        if let showModal = notification.userInfo?["showModal"] as? Bool {
+            self.showModal = showModal
+            print("showModal: \(showModal)")
+        }
             UIView.animate(withDuration: 0.5) {
                 // 버튼을 초기 위치로 되돌림
                 self.orderListButton.snp.updateConstraints {
-                    $0.bottom.equalToSuperview().inset(30) // 초기 위치로 되돌림
+                    $0.bottom.equalToSuperview().inset(60) // 초기 위치로 되돌림
                 }
                 self.view.layoutIfNeeded() // 제약 조건 업데이트
             }
-        }
     }
+    
     
     //MARK: - 주문 내역 모달을 표시하는 메서드
     @objc
@@ -80,7 +92,7 @@ class OrderSheetController: UIViewController {
         self.present(tvc, animated: true)
         hideOrderButton()
     }
-
+    
     //MARK: - 토스트 알림
     func showToast() {
         
