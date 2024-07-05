@@ -56,6 +56,14 @@ class SBMenuController: UIViewController {
             self.view.layoutIfNeeded()
         }
     }
+    
+    // priceLabel Text에 , 추가하는 메서드
+    private func formatPrice(_ price: String) -> String? {
+        guard let priceNumber = Double(price) else { return price }
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal
+        return numberFormatter.string(from: NSNumber(value: priceNumber))
+    }
 }
 
 extension SBMenuController: UICollectionViewDataSource, UICollectionViewDelegate {
@@ -67,8 +75,14 @@ extension SBMenuController: UICollectionViewDataSource, UICollectionViewDelegate
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "img", for: indexPath) as! SBMenuCell
         let menuItem = drinks[currentCategoryIndex][indexPath.item]
         cell.imgView.image = UIImage(named: menuItem.imageName)
-        cell.beverageLabel.text = "\(menuItem.menuName)"
-        cell.priceLabel.text = "\(menuItem.menuPrice)"
+        cell.beverageLabel.text = menuItem.menuName.replacingOccurrences(of: " ", with: "\n")
+//        cell.beverageLabel.text = "\(menuItem.menuName)"
+        if let formattedPrice = formatPrice(menuItem.menuPrice) {
+            cell.priceLabel.text = "\(formattedPrice)원"
+        } else {
+            cell.priceLabel.text = "\(menuItem.menuPrice)원"
+        }
+//        cell.priceLabel.text = "\(menuItem.menuPrice)원"
         return cell
     }
 }
@@ -81,7 +95,7 @@ extension SBMenuController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         // 셀 위 아래 간격
-        return 20
+        return 30
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {

@@ -50,7 +50,6 @@ class KHMenuView: UIView {
     let underlineView: UIView = {
         let view = UIView()
         view.backgroundColor = .black
-        view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
@@ -131,10 +130,10 @@ class KHMenuView: UIView {
         }
         
         // orderView Constraints - 마지막에 추가
-//        orderView!.snp.makeConstraints {
-//            $0.bottom.equalToSuperview().inset(20)
-//            $0.centerX.equalToSuperview()
-//        }
+        //        orderView!.snp.makeConstraints {
+        //            $0.bottom.equalToSuperview().inset(20)
+        //            $0.centerX.equalToSuperview()
+        //        }
         
         collectionView.register(SBMenuCell.self, forCellWithReuseIdentifier: "img")
         
@@ -145,9 +144,32 @@ class KHMenuView: UIView {
 
 // MARK: - SBMenuCell : 컬렉션 뷰의 셀을 담당
 class SBMenuCell: UICollectionViewCell {
+    
     let imgView = UIImageView()
-    let beverageLabel = UILabel()
-    let priceLabel = UILabel()
+    
+    // 음료이름 레이블 생성
+    let beverageLabel = {
+        let bl = UILabel()
+        bl.textAlignment = .center
+        bl.textColor = .black
+        bl.backgroundColor = .white
+        bl.clipsToBounds = true
+        bl.numberOfLines = 2
+        bl.font = UIFont.systemFont(ofSize: 15)
+        return bl
+    }()
+    
+    // 가격 레이블 생성
+    let priceLabel = {
+        let pl = UILabel()
+        pl.textAlignment = .center
+        pl.backgroundColor = .white
+        pl.textColor = .black
+        pl.clipsToBounds = true
+//        pl.numberOfLines = 0
+        pl.font = UIFont.systemFont(ofSize: 14, weight: .bold)
+        return pl
+    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -159,25 +181,30 @@ class SBMenuCell: UICollectionViewCell {
     }
     
     private func setupViews() {
-        contentView.addSubview(imgView)
-        contentView.addSubview(beverageLabel)
-        contentView.addSubview(priceLabel)
         
+        [imgView, beverageLabel, priceLabel].forEach {
+            self.addSubview($0)
+        }
+        
+        // 간격 맞추는 코드
         imgView.contentMode = .scaleAspectFit
         
         imgView.snp.makeConstraints {
-            $0.top.leading.trailing.equalToSuperview()
-            $0.height.equalTo(contentView.snp.width)
+            $0.top.leading.trailing.equalToSuperview().inset(10)
+            $0.height.equalTo(contentView.snp.height).multipliedBy(0.6)
         }
         
         beverageLabel.snp.makeConstraints {
-            $0.top.equalTo(imgView.snp.bottom).offset(5)
-            $0.leading.trailing.equalToSuperview()
+            $0.top.equalTo(imgView.snp.bottom).offset(0)
+            $0.leading.equalToSuperview().inset(10)
+            $0.trailing.equalToSuperview().inset(10)
         }
         
         priceLabel.snp.makeConstraints {
-            $0.top.equalTo(beverageLabel.snp.bottom).offset(5)
-            $0.leading.trailing.bottom.equalToSuperview()
+            $0.bottom.equalToSuperview().offset(-5)
+            $0.leading.equalToSuperview().inset(10)
+            $0.trailing.equalToSuperview().inset(10)
+            $0.height.equalTo(20)
         }
     }
 }
