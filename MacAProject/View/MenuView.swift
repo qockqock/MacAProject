@@ -8,39 +8,49 @@
 import UIKit
 import SnapKit
 
-class MenuView: UICollectionViewCell {
-    
-    // 이미지 뷰 생성
-    let imgView: UIImageView = {
-        let iv = UIImageView()
-        iv.contentMode = .scaleAspectFit
-        return iv
+// MARK: - KHMenuCell : 로고, 세그먼트 컨트롤, 컬렉션 뷰 포함
+class KHMenuView: UIView {
+    // 로고 이미지 설정
+    lazy var logoImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFit
+        imageView.image = UIImage(named: "logo")
+        return imageView
     }()
     
-    // 음료이름 레이블 생성
-    let beverageLabel: UILabel = {
-        let lbl = UILabel()
-        lbl.textAlignment = .center
-        lbl.textColor = .black
-        lbl.backgroundColor = .white
-        lbl.clipsToBounds = true
-        lbl.numberOfLines = 2
-        lbl.font = UIFont.systemFont(ofSize: 15)
-        return lbl
+    // 세그먼트 컨트롤 생성
+    lazy var segmentControl: UISegmentedControl = {
+        let control = UISegmentedControl(items: categories)
+        control.selectedSegmentIndex = 0
+        control.backgroundColor = .white
+        control.tintColor = .white
+        control.selectedSegmentTintColor = .clear
+        control.apportionsSegmentWidthsByContent = true
+        
+        let normalTextAttributes: [NSAttributedString.Key: Any] = [
+            .font: UIFont.systemFont(ofSize: 14)
+        ]
+        control.setTitleTextAttributes(normalTextAttributes, for: .normal)
+        
+        let selectedTextAttributes: [NSAttributedString.Key: Any] = [
+            .font: UIFont.boldSystemFont(ofSize: 14)
+        ]
+        control.setTitleTextAttributes(selectedTextAttributes, for: .selected)
+        
+        return control
     }()
     
-    let priceLabel: UILabel = {
-        let pl = UILabel()
-        pl.textAlignment = .center
-        pl.backgroundColor = .white
-        pl.textColor = .black
-        pl.clipsToBounds = true
-        pl.numberOfLines = 0
-        pl.font = UIFont.systemFont(ofSize: 14, weight: .bold)
-        return pl
+    // 컬렉션 뷰 생성
+    let collectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.itemSize.height = 100
+        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        cv.backgroundColor = .white
+        return cv
     }()
     
-    
+    // 카테고리 종류 생성
+    let categories = ["추천메뉴", "커피", "디저트", "스무디", "티", "왜먹어?"]
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -48,33 +58,73 @@ class MenuView: UICollectionViewCell {
     }
     
     required init?(coder: NSCoder) {
-        fatalError("*T_T*")
+        fatalError("init(coder:) has not been implemented")
     }
     
-    // 레이아웃 설정
     private func setupLayout() {
-        
-        [imgView, beverageLabel, priceLabel].forEach {
-            self.addSubview($0)
+        [logoImageView, segmentControl, collectionView].forEach {
+            addSubview($0)
         }
         
-        imgView.snp.makeConstraints { make in
-            make.top.left.right.equalToSuperview().inset(10)
-            make.height.equalTo(contentView.snp.height).multipliedBy(0.6)
+        // 로고 Constraints
+        logoImageView.snp.makeConstraints {
+            $0.top.equalTo(safeAreaLayoutGuide.snp.top).offset(-10) // 솔비 offset 값 변경
+            $0.centerX.equalToSuperview()
+            $0.width.equalTo(255) // 솔비 변경
+            $0.height.equalTo(100)
         }
         
-        beverageLabel.snp.makeConstraints { make in
-            make.top.equalTo(imgView.snp.bottom).offset(0) //솔비 변경
-            make.left.equalToSuperview().inset(10)
-            make.right.equalToSuperview().inset(10)
-//            make.height.greaterThanOrEqualTo(30)
+        // 카테고리 Constraints
+        segmentControl.snp.makeConstraints {
+            $0.top.equalTo(logoImageView.snp.bottom).offset(5) // 솔비 offset 값 변경
+            $0.left.right.equalToSuperview().inset(20)
         }
         
-        priceLabel.snp.makeConstraints { make in
-            make.bottom.equalToSuperview().offset(-5)
-            make.left.equalToSuperview().inset(10)
-            make.right.equalToSuperview().inset(10)
-            make.height.equalTo(20)
+        // 컬렉션뷰(메뉴 리스트) Constraints
+        collectionView.snp.makeConstraints {
+            $0.top.equalTo(segmentControl.snp.bottom).offset(30)
+            $0.leading.trailing.bottom.equalToSuperview().inset(UIEdgeInsets(top: 0, left: 20, bottom: 30, right: 20))
+        }
+        collectionView.register(SBMenuCell.self, forCellWithReuseIdentifier: "img")
+    }
+}
+
+// MARK: - SBMenuCell : 컬렉션 뷰의 셀을 담당
+class SBMenuCell: UICollectionViewCell {
+    let imgView = UIImageView()
+    let beverageLabel = UILabel()
+    let priceLabel = UILabel()
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupViews()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func setupViews() {
+        contentView.addSubview(imgView)
+        contentView.addSubview(beverageLabel)
+        contentView.addSubview(priceLabel)
+        
+        imgView.contentMode = .scaleAspectFit
+        
+        imgView.snp.makeConstraints {
+            $0.top.leading.trailing.equalToSuperview()
+            $0.height.equalTo(contentView.snp.width)
+        }
+        
+        beverageLabel.snp.makeConstraints {
+            $0.top.equalTo(imgView.snp.bottom).offset(5)
+            $0.leading.trailing.equalToSuperview()
+        }
+        
+        priceLabel.snp.makeConstraints {
+            $0.top.equalTo(beverageLabel.snp.bottom).offset(5)
+            $0.leading.trailing.bottom.equalToSuperview()
         }
     }
 }
+
