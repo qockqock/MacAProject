@@ -6,8 +6,8 @@
 //
 
 import UIKit
-import SwiftUI
 import SnapKit
+
 //MARK: - OrderSheetController 클래스: 주문 내역 버튼을 관리하는 클래스
 class OrderSheetController: UIViewController {
     //tvc 클래스 변수로 변환
@@ -122,24 +122,3 @@ class OrderSheetController: UIViewController {
     }
 }
 
-//// SwiftUI 미리보기 설정
-//struct PreView2: PreviewProvider {
-//    static var previews: some View {
-//        OrderSheetController().toPreview()
-//    }
-//}
-//#if DEBUG
-//extension UIViewController {
-//    private struct Preview: UIViewControllerRepresentable {
-//        let viewController: UIViewController
-//        func makeUIViewController(context: Context) -> UIViewController {
-//            return viewController
-//        }
-//        func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
-//        }
-//    }
-//    func toPreview2() -> some View {
-//        Preview(viewController: self)
-//    }
-//}
-//#endif

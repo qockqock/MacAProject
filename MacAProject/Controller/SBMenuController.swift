@@ -67,7 +67,7 @@ extension SBMenuController: UICollectionViewDataSource, UICollectionViewDelegate
         cell.priceLabel.text = "\(menuItem.menuPrice)"
         
         cell.imageTapAction = {
-            print("프린트")
+            print(cell.beverageLabel.text!)
         }
         
         return cell
