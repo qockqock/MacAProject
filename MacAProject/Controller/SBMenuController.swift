@@ -10,6 +10,10 @@ import UIKit
 import SnapKit
 import SwiftUI
 
+protocol SBMenuCollectionViewCellDelegate: AnyObject {
+    func didSelectCountButton(_ cell: CoffeeList)
+}
+
 class SBMenuController: UIViewController {
     
     // 카테고리 메뉴 배열
@@ -27,6 +31,7 @@ class SBMenuController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+        moveUnderline(to: 0)
         
         khMenuView.collectionView.dataSource = self
         khMenuView.collectionView.delegate = self
@@ -34,9 +39,22 @@ class SBMenuController: UIViewController {
         khMenuView.segmentControl.addTarget(self, action: #selector(segmentValueChanged(_:)), for: .valueChanged)
     }
     
-    @objc private func segmentValueChanged(_ sender: UISegmentedControl) {
+    @objc func segmentValueChanged(_ sender: UISegmentedControl) {
         currentCategoryIndex = sender.selectedSegmentIndex
         khMenuView.collectionView.reloadData()
+        moveUnderline(to: sender.selectedSegmentIndex)
+    }
+    
+    // 밑줄 이동 메서드
+    private func moveUnderline(to index: Int) {
+        let segmentWidth = khMenuView.segmentControl.frame.width / CGFloat(khMenuView.segmentControl.numberOfSegments)
+        let leadingConstraint = segmentWidth * CGFloat(index) + 10 // 10은 여유로운 여백
+        UIView.animate(withDuration: 0.3) {
+            self.khMenuView.underlineView.snp.updateConstraints {
+                $0.leading.equalToSuperview().offset(leadingConstraint)
+            }
+            self.view.layoutIfNeeded()
+        }
     }
 }
 
