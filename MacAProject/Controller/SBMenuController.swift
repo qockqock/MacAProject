@@ -34,7 +34,6 @@ class SBMenuController: UIViewController {
         
         khMenuView.segmentControl.addTarget(self, action: #selector(segmentValueChanged(_:)), for: .valueChanged)
     }
-    
     @objc func segmentValueChanged(_ sender: UISegmentedControl) {
         currentCategoryIndex = sender.selectedSegmentIndex
         khMenuView.collectionView.reloadData()
@@ -62,7 +61,6 @@ class SBMenuController: UIViewController {
     }
 }
 
-
 extension SBMenuController: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return drinks[currentCategoryIndex].count
@@ -80,11 +78,18 @@ extension SBMenuController: UICollectionViewDataSource, UICollectionViewDelegate
             cell.priceLabel.text = "\(menuItem.menuPrice)원"
         }
         cell.imageTapAction = {
-            print(cell.beverageLabel.text!)
+            print("called: SBMenu - \(menuItem)")
         }
-        
         return cell
     }
+    //cell이 클릭 됬을때 동작함
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let menuItem = drinks[currentCategoryIndex][indexPath.item]
+        let orderVC = TableViewController()
+        orderVC.menuItem = menuItem
+        orderVC.addOrder(imageName: menuItem.imageName, menuName: menuItem.menuName, menuPrice: menuItem.menuPrice)
+    }
+   
 }
 
 extension SBMenuController: UICollectionViewDelegateFlowLayout {

@@ -65,29 +65,20 @@ class OrderSheetController: UIViewController {
     // 모달 창 띄우기
     @objc
     func showOrderListModal() {
-        if showModal {
+        
+        if tvc.orders.isEmpty {
+            print("아직 선택된 상품 없음.")
             if let sheetViewController = tvc.sheetPresentationController {
                 sheetViewController.detents = [.medium()]
                 sheetViewController.preferredCornerRadius = 20
             }
             self.present(tvc, animated: true, completion: nil)
         } else {
-            print("아직 선택된 상품 없음.")
-            //지현 수정한 코드
             if let sheetViewController = tvc.sheetPresentationController {
                 sheetViewController.detents = [.medium()]
                 sheetViewController.preferredCornerRadius = 20
             }
             self.present(tvc, animated: true, completion: nil)
-            
-            //득령 원래 코드
-//            let sheetViewController = tvc
-//            sheetViewController.modalPresentationStyle = .automatic
-//            self.present(sheetViewController, animated: true, completion: nil)
-            
-            //            let alert = UIAlertController(title: "Error", message: "선택된 상품이 없습니다.", preferredStyle: .alert)
-            //            alert.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
-            //            self.present(alert, animated: true, completion: nil)
         }
     }
 }

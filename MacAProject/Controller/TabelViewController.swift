@@ -10,6 +10,9 @@ class TableViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     var showModal = false
     
+    var menuItem: CoffeeList?
+    
+    var orders:[CoffeeList] = []
     
     // 샘플 데이터 배열 추가
     let sampleData = [
@@ -17,6 +20,7 @@ class TableViewController: UIViewController, UITableViewDataSource, UITableViewD
         ("유니콘 매직 프라페(레드)", 2, 4000),
         ("유니콘 매직 프라페(그린)", 1, 4100)
     ]
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,6 +34,7 @@ class TableViewController: UIViewController, UITableViewDataSource, UITableViewD
         
         setupTableviewConstraints()
         paymentButton_Modal()
+        
     }
     
     //MARK: - 모달 내부에 있는 결제 Btn 함수
@@ -61,7 +66,7 @@ class TableViewController: UIViewController, UITableViewDataSource, UITableViewD
         
         // 뷰에 버튼, 총 주문금액 ,라벨 추가하고 오토레이아웃 설정
         [orderListLabel,totalPriceLabel, totalPriceNumLabel, orderListButton].forEach { view.addSubview($0) }
-
+        
         orderListLabel.snp.makeConstraints {
             $0.leading.equalTo(orderListButton.snp.leading)
             $0.top.equalToSuperview().inset(20)
@@ -119,9 +124,21 @@ class TableViewController: UIViewController, UITableViewDataSource, UITableViewD
         }
     }
     
+    func addOrder(imageName: String, menuName: String, menuPrice: String) {
+            let menuItem = CoffeeList(imageName: imageName, menuName: menuName, menuPrice: menuPrice)
+            orders.append(menuItem)
+            
+            // 주문이 추가된 후, 필요한 UI 업데이트 등을 수행할 수 있습니다.
+            print("Added Order: \(menuItem.menuName)")
+            
+            // 예시로, 주문이 추가될 때마다 테이블 뷰를 다시 로드하는 코드를 추가할 수 있습니다.
+            tableView.reloadData()
+        }
+    
+    
     // 테이블뷰의 섹션당 셀의 개수 설정
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return sampleData.count
+        return orders.count
     }
     
     // 셀의 내용을 설정하는 메서드
@@ -129,14 +146,15 @@ class TableViewController: UIViewController, UITableViewDataSource, UITableViewD
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "cellID", for: indexPath) as? OrderMakeCell else {
             return UITableViewCell()
         }
-        
-        let data = sampleData[indexPath.row]
-        cell.productNameLabel.text = data.0
-        cell.quantityLabel.text = "\(data.1)개"
-        cell.priceLabel.text = "\(data.2)원"
+      
+        let order = orders[indexPath.row]
+        cell.productNameLabel.text = order.menuName
+        cell.quantityLabel.text = "1개" // 예시로 하나씩 주문했다고 가정
+        cell.priceLabel.text = order.menuPrice
         
         cell.selectionStyle = .none
         
         return cell
     }
+
 }

@@ -20,7 +20,6 @@
 		6B55C3362C33CAED00804DA5 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B55C3352C33CAEC00804DA5 /* Model.swift */; };
 		6B55C3432C35A1B500804DA5 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B55C3422C35A1B500804DA5 /* MenuView.swift */; };
 		6B55C3472C37CD9700804DA5 /* DelegateReservoir.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B55C3462C37CD9700804DA5 /* DelegateReservoir.swift */; };
-		A871418B2C3789C100A0418E /* MenuCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A871418A2C3789C100A0418E /* MenuCellView.swift */; };
 		A871418D2C3789F800A0418E /* TabelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A871418C2C3789F800A0418E /* TabelViewController.swift */; };
 		A871418F2C37DD4900A0418E /* OrederCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A871418E2C37DD4900A0418E /* OrederCellView.swift */; };
 		A8DA16222C35128E00786E78 /* BottomTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8DA16212C35128E00786E78 /* BottomTabView.swift */; };
@@ -41,7 +40,6 @@
 		6B55C3352C33CAEC00804DA5 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		6B55C3422C35A1B500804DA5 /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
 		6B55C3462C37CD9700804DA5 /* DelegateReservoir.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelegateReservoir.swift; sourceTree = "<group>"; };
-		A871418A2C3789C100A0418E /* MenuCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuCellView.swift; sourceTree = "<group>"; };
 		A871418C2C3789F800A0418E /* TabelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabelViewController.swift; sourceTree = "<group>"; };
 		A871418E2C37DD4900A0418E /* OrederCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrederCellView.swift; sourceTree = "<group>"; };
 		A8DA16212C35128E00786E78 /* BottomTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomTabView.swift; sourceTree = "<group>"; };
@@ -108,7 +106,6 @@
 				C25D1FCD2C3425100061418D /* CategoryView.swift */,
 				A8DA16212C35128E00786E78 /* BottomTabView.swift */,
 				6B55C3422C35A1B500804DA5 /* MenuView.swift */,
-				A871418A2C3789C100A0418E /* MenuCellView.swift */,
 				A871418E2C37DD4900A0418E /* OrederCellView.swift */,
 			);
 			path = View;
@@ -208,7 +205,6 @@
 				6B55C3432C35A1B500804DA5 /* MenuView.swift in Sources */,
 				6B55C3212C33C91100804DA5 /* ViewController.swift in Sources */,
 				A871418F2C37DD4900A0418E /* OrederCellView.swift in Sources */,
-				A871418B2C3789C100A0418E /* MenuCellView.swift in Sources */,
 				5F8CCD6F2C367F7100F91F0F /* OrderSheetController.swift in Sources */,
 				C25D1FCE2C3425100061418D /* CategoryView.swift in Sources */,
 				6B55C3472C37CD9700804DA5 /* DelegateReservoir.swift in Sources */,
