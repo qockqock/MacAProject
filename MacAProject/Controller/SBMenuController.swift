@@ -8,94 +8,56 @@
 
 import UIKit
 import SnapKit
+import SwiftUI
 
 class SBMenuController: UIViewController {
-    
-    // 컬렉션 뷰 생성
-    let collectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        cv.backgroundColor = .white
-        return cv
-    }()
-    
-    // 카테고리 종류 생성
-    let categories = ["추천메뉴", "커피", "디저트", "스무디", "티", "비추천메뉴"]
     
     // 카테고리 메뉴 배열
     var drinks: [[CoffeeList]] = [CoffeeList.recommended_Menu, CoffeeList.coffee_Menu, CoffeeList.dessert_Menu, CoffeeList.smoothie_Menu, CoffeeList.tea_Menu, CoffeeList.do_not_eat_Menu]
     
     var currentCategoryIndex: Int = 0
     
-    // 로고 이미지 설정
-    lazy var logoImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFit
-        imageView.image = UIImage(named: "logo")
-        return imageView
-    }()
+    // khMenuView = 로고, 카테고리 관련
+    private let khMenuView = KHMenuView()
     
-    // 세그먼트 컨트롤 생성
-    lazy var segmentControl: UISegmentedControl = {
-        let control = UISegmentedControl(items: categories)
-        control.selectedSegmentIndex = 0
-        control.addTarget(self, action: #selector(segmentValueChanged(_:)), for: .valueChanged)
-        control.backgroundColor = .white
-        control.tintColor = .white
-        control.selectedSegmentTintColor = .clear
-        control.apportionsSegmentWidthsByContent = true
-        
-        let normalTextAttributes: [NSAttributedString.Key: Any] = [
-            .font: UIFont.systemFont(ofSize: 14)
-        ]
-        control.setTitleTextAttributes(normalTextAttributes, for: .normal)
-        
-        let selectedTextAttributes: [NSAttributedString.Key: Any] = [
-            .font: UIFont.boldSystemFont(ofSize: 14)
-        ]
-        control.setTitleTextAttributes(selectedTextAttributes, for: .selected)
-        
-        return control
-    }()
+    override func loadView() {
+        view = khMenuView
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+        moveUnderline(to: 0)
         
-        collectionView.dataSource = self
-        collectionView.delegate = self
+        khMenuView.collectionView.dataSource = self
+        khMenuView.collectionView.delegate = self
         
-        setupLayout()
+        khMenuView.segmentControl.addTarget(self, action: #selector(segmentValueChanged(_:)), for: .valueChanged)
     }
-    
-    // 레이아웃 설정
-    private func setupLayout() {
-        [logoImageView, segmentControl, collectionView].forEach {
-            view.addSubview($0)
-        }
-        
-        logoImageView.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(20)
-            $0.centerX.equalToSuperview()
-            $0.width.equalTo(200)
-            $0.height.equalTo(100)
-        }
-        
-        segmentControl.snp.makeConstraints {
-            $0.top.equalTo(logoImageView.snp.bottom).offset(20)
-            $0.left.right.equalToSuperview().inset(20)
-        }
-        
-        collectionView.snp.makeConstraints {
-            $0.top.equalTo(segmentControl.snp.bottom).offset(20)
-            $0.leading.trailing.bottom.equalToSuperview().inset(UIEdgeInsets(top: 0, left: 20, bottom: 20, right: 20))
-        }
-        collectionView.register(MenuView.self, forCellWithReuseIdentifier: "img")
-    }
-    
-    @objc private func segmentValueChanged(_ sender: UISegmentedControl) {
+    @objc func segmentValueChanged(_ sender: UISegmentedControl) {
         currentCategoryIndex = sender.selectedSegmentIndex
-        collectionView.reloadData()
+        khMenuView.collectionView.reloadData()
+        moveUnderline(to: sender.selectedSegmentIndex)
+    }
+    
+    // 밑줄 이동 메서드
+    private func moveUnderline(to index: Int) {
+        let segmentWidth = khMenuView.segmentControl.frame.width / CGFloat(khMenuView.segmentControl.numberOfSegments)
+        let leadingConstraint = segmentWidth * CGFloat(index) + 10 // 10은 여유로운 여백
+        UIView.animate(withDuration: 0.3) {
+            self.khMenuView.underlineView.snp.updateConstraints {
+                $0.leading.equalToSuperview().offset(leadingConstraint)
+            }
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    // priceLabel Text에 , 추가하는 메서드
+    private func formatPrice(_ price: String) -> String? {
+        guard let priceNumber = Double(price) else { return price }
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal
+        return numberFormatter.string(from: NSNumber(value: priceNumber))
     }
 }
 
@@ -105,24 +67,44 @@ extension SBMenuController: UICollectionViewDataSource, UICollectionViewDelegate
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "img", for: indexPath) as! MenuView
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "img", for: indexPath) as! SBMenuCell
         let menuItem = drinks[currentCategoryIndex][indexPath.item]
         cell.imgView.image = UIImage(named: menuItem.imageName)
-        cell.label.text = "\(menuItem.menuName) - \(menuItem.menuPrice)원"
+        cell.beverageLabel.text = menuItem.menuName.replacingOccurrences(of: " ", with: "\n")
+        //        cell.beverageLabel.text = "\(menuItem.menuName)"
+        if let formattedPrice = formatPrice(menuItem.menuPrice) {
+            cell.priceLabel.text = "\(formattedPrice)원"
+        } else {
+            cell.priceLabel.text = "\(menuItem.menuPrice)원"
+        }
+        cell.imageTapAction = {
+            print("called: SBMenu - \(menuItem)")
+        }
         return cell
     }
+    //cell이 클릭 됬을때 동작함
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let menuItem = drinks[currentCategoryIndex][indexPath.item]
+        let orderVC = TableViewController()
+        orderVC.menuItem = menuItem
+        orderVC.addOrder(imageName: menuItem.imageName, menuName: menuItem.menuName, menuPrice: menuItem.menuPrice)
+    }
+   
 }
 
 extension SBMenuController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 110, height: 130)
+        // 셀 크기 조정
+        return CGSize(width: 117, height: 180)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 80
+        // 셀 위 아래 간격
+        return 30
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 5
+        // 셀 좌 우 간격
+        return 0
     }
 }
