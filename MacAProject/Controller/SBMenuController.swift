@@ -101,10 +101,10 @@ extension SBMenuController: UICollectionViewDataSource, UICollectionViewDelegate
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "img", for: indexPath) as! SBMenuCell
         
-        // 0인지 확인 (예외처리) - 대성
-        guard menus[currentCategoryIndex].indices.contains(indexPath.item) else {
-            return cell// 아무것도 하지 않음
-        }
+//        // 0인지 확인 (예외처리) - 대성
+//        guard menus[currentCategoryIndex].indices.contains(indexPath.item) else {
+//            return cell// 아무것도 하지 않음
+//        }
         
         let menuItem = menus[currentCategoryIndex][indexPath.item]
         cell.imgView.image = UIImage(named: menuItem.imageName)
@@ -123,11 +123,6 @@ extension SBMenuController: UICollectionViewDataSource, UICollectionViewDelegate
     
     // cell이 클릭 됐을때 동작함
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-       // 0인지 확인 (예외 처리) - 대성
-        guard menus[currentCategoryIndex].indices.contains(indexPath.item) else {
-            return // 아무것도 하지 않음
-        }
-    
         let menuItem = menus[currentCategoryIndex][indexPath.item]
         Basket.stc.addItem(menuItem)
         showToast()

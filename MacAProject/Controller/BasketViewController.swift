@@ -11,6 +11,7 @@ import SnapKit
 
 //MARK: - TableViewController 클래스: 테이블뷰를 관리하는 클래스
 class BasketViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+    weak var delegate: BasketViewControllerDelegate?
     // 테이블뷰 인스턴스 생성
     private let tableView = UITableView()
     
@@ -25,16 +26,13 @@ class BasketViewController: UIViewController, UITableViewDataSource, UITableView
     // 주문 목록 배열
     var orders:[CoffeeList] = []
     
-    // 샘플 데이터 배열 추가
-    //    let sampleData = [
-    //        ("유니콘 매직 프라페(블루)", 100, 39000),
-    //        ("유니콘 매직 프라페(레드)", 2, 4000),
-    //        ("유니콘 매직 프라페(그린)", 1, 4100)
-    //    ]
+    // 오류수정 코드
+//    let bug = OrderSheetController()
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         view.backgroundColor = .white
         
         tableView.dataSource = self
@@ -136,6 +134,7 @@ class BasketViewController: UIViewController, UITableViewDataSource, UITableView
             //노티로 데이터 전달
             NotificationCenter.default.post(name: NSNotification.Name("notiData"), object:nil, userInfo: ["showModal" : showModal])
             delteAll()
+//            bug.showOrderListModal()
         }
         alert.addAction(closeAction)
         
@@ -145,6 +144,7 @@ class BasketViewController: UIViewController, UITableViewDataSource, UITableView
     
     @objc
     func delteAll(){
+//        bug.showOrderListModal()
         Basket.stc.clearAll()
         tableView.reloadData()
     }
@@ -232,12 +232,14 @@ class BasketViewController: UIViewController, UITableViewDataSource, UITableView
             let coffeeItem = basket.items[indexPath.row].coffee
             Basket.stc.addItem(coffeeItem)
             tableView.reloadRows(at: [indexPath], with: .automatic)
+            delegate?.didUpdateBasket()
         }
 
         func decreaseQuantity(at indexPath: IndexPath) {
             let coffeeItem = basket.items[indexPath.row].coffee
             Basket.stc.removeItem(coffeeItem)
             tableView.reloadData()
+            delegate?.didUpdateBasket()
         }
 
 }

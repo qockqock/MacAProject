@@ -61,7 +61,7 @@ class OrderSheetController: UIViewController {
     
     // 모달 창 띄우기
     @objc private func showOrderListModal() {
-           let hasProducts = !basketViewController.orders.isEmpty
+        let hasProducts = !basketViewController.orders.isEmpty
            print(hasProducts ? "상품 있음." : "상품 없음.")
            
            if let sheetViewController = basketViewController.sheetPresentationController {
@@ -71,6 +71,7 @@ class OrderSheetController: UIViewController {
            
            present(basketViewController, animated: true, completion: nil)
        }
+    
     //버튼 숨기기 에니메이션
     @objc private func handleShowModalNotification(_ notification: Notification) {
             if let showModal = notification.userInfo?["showModal"] as? Bool {
