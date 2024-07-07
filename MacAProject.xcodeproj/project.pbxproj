@@ -10,7 +10,7 @@
 		5F8CCD6F2C367F7100F91F0F /* OrderSheetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F8CCD6E2C367F7100F91F0F /* OrderSheetController.swift */; };
 		5F8CCD712C369F9600F91F0F /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 5F8CCD702C369F9600F91F0F /* SnapKit */; };
 		5F8CCD742C36F65700F91F0F /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 5F8CCD732C36F65700F91F0F /* Lottie */; };
-		5F8CCD7A2C371BBD00F91F0F /* coffee.json in Resources */ = {isa = PBXBuildFile; fileRef = 5F8CCD792C371BBD00F91F0F /* coffee.json */; };
+		5F8CCDC62C3B0E7800F91F0F /* coffee.json in Resources */ = {isa = PBXBuildFile; fileRef = 5F8CCDC52C3B0E7800F91F0F /* coffee.json */; };
 		6B015C5F2C3AF05600D5D69C /* Basket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B015C5E2C3AF05600D5D69C /* Basket.swift */; };
 		6B015C612C3AF66100D5D69C /* BasketViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B015C602C3AF66100D5D69C /* BasketViewController.swift */; };
 		6B55C31D2C33C91100804DA5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B55C31C2C33C91100804DA5 /* AppDelegate.swift */; };
@@ -28,7 +28,7 @@
 
 /* Begin PBXFileReference section */
 		5F8CCD6E2C367F7100F91F0F /* OrderSheetController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderSheetController.swift; sourceTree = "<group>"; };
-		5F8CCD792C371BBD00F91F0F /* coffee.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = coffee.json; sourceTree = "<group>"; };
+		5F8CCDC52C3B0E7800F91F0F /* coffee.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = coffee.json; sourceTree = "<group>"; };
 		6B015C5E2C3AF05600D5D69C /* Basket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Basket.swift; sourceTree = "<group>"; };
 		6B015C602C3AF66100D5D69C /* BasketViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasketViewController.swift; sourceTree = "<group>"; };
 		6B55C3192C33C91100804DA5 /* MacAProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MacAProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -84,7 +84,7 @@
 				6B55C3312C33C9F700804DA5 /* View */,
 				6B55C3322C33C9FF00804DA5 /* Controller */,
 				6B55C3252C33C91300804DA5 /* Assets.xcassets */,
-				5F8CCD792C371BBD00F91F0F /* coffee.json */,
+				5F8CCDC52C3B0E7800F91F0F /* coffee.json */,
 				6B55C3272C33C91300804DA5 /* LaunchScreen.storyboard */,
 				6B55C32A2C33C91300804DA5 /* Info.plist */,
 			);
@@ -188,7 +188,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5F8CCD7A2C371BBD00F91F0F /* coffee.json in Resources */,
+				5F8CCDC62C3B0E7800F91F0F /* coffee.json in Resources */,
 				6B55C3262C33C91300804DA5 /* Assets.xcassets in Resources */,
 				6B55C3292C33C91300804DA5 /* Base in Resources */,
 			);

@@ -21,6 +21,7 @@ class ViewController: UIViewController {
             if finished {
                 // 애니메이션이 종료되면 animationView를 제거
                 animationView.removeFromSuperview()
+                animationView.animationSpeed = 2
                 self.setupControllers()
             }
         }
