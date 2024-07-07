@@ -60,7 +60,7 @@ class BasketViewController: UIViewController, UITableViewDataSource, UITableView
         totalPriceLabel.text = "총 상품금액"
         totalPriceLabel.font = .systemFont(ofSize: 16)
         
-        totalPriceNumLabel.text = "\(sum)"
+        totalPriceNumLabel.text = "\(sum)원"
         totalPriceNumLabel.font = .boldSystemFont(ofSize: 20)
         totalPriceNumLabel.textColor = .red
         
@@ -213,6 +213,7 @@ class BasketViewController: UIViewController, UITableViewDataSource, UITableView
             cell.minusAction = {
                 self.decreaseQuantity(at: indexPath)
                 self.updateTotalPriceLabel()
+
             }
         return cell
         }
