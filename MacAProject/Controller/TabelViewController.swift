@@ -1,6 +1,5 @@
 import UIKit
 import SnapKit
-import SwiftUI
 
 //MARK: - TableViewController 클래스: 테이블뷰를 관리하는 클래스
 class TableViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
@@ -8,27 +7,31 @@ class TableViewController: UIViewController, UITableViewDataSource, UITableViewD
     // 테이블뷰 인스턴스 생성
     private let tableView = UITableView()
     
+    // 바스켓 대성 추가
+    let basket = Basket.stc
+    
+    // 얼럿 관련
     var showModal = false
     
-    var menuItem: CoffeeList?
+//    var menuItem: CoffeeList?
     
     var orders:[CoffeeList] = []
     
     // 샘플 데이터 배열 추가
-    let sampleData = [
-        ("유니콘 매직 프라페(블루)", 100, 39000),
-        ("유니콘 매직 프라페(레드)", 2, 4000),
-        ("유니콘 매직 프라페(그린)", 1, 4100)
-    ]
+//    let sampleData = [
+//        ("유니콘 매직 프라페(블루)", 100, 39000),
+//        ("유니콘 매직 프라페(레드)", 2, 4000),
+//        ("유니콘 매직 프라페(그린)", 1, 4100)
+//    ]
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         view.backgroundColor = .white
         
         tableView.dataSource = self
         tableView.delegate = self
+        
         tableView.rowHeight = 85
         tableView.register(OrderMakeCell.self, forCellReuseIdentifier: "cellID")
         
@@ -138,7 +141,7 @@ class TableViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     // 테이블뷰의 섹션당 셀의 개수 설정
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return orders.count
+        return basket.items.count
     }
     
     // 셀의 내용을 설정하는 메서드
@@ -147,12 +150,12 @@ class TableViewController: UIViewController, UITableViewDataSource, UITableViewD
             return UITableViewCell()
         }
       
-        let order = orders[indexPath.row]
-        cell.productNameLabel.text = order.menuName
-        cell.quantityLabel.text = "1개" // 예시로 하나씩 주문했다고 가정
-        cell.priceLabel.text = order.menuPrice
-        
-        cell.selectionStyle = .none
+        // 대성 추가
+        let order = basket.items[indexPath.row]
+        cell.productImageView.image = UIImage(named: order.coffee.imageName)
+        cell.productNameLabel.text = order.coffee.menuName
+        cell.quantityLabel.text = "\(order.numbers)개"
+        cell.priceLabel.text = "\(order.coffee.menuPrice)원"
         
         return cell
     }

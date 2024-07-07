@@ -22,6 +22,7 @@ class KHMenuView: UIView {
     lazy var segmentControl: UISegmentedControl = {
         let control = UISegmentedControl(items: categories)
         control.selectedSegmentIndex = 0
+        
         control.backgroundColor = .white
         control.tintColor = .white
         control.selectedSegmentTintColor = .clear
@@ -38,7 +39,7 @@ class KHMenuView: UIView {
             .font: UIFont.boldSystemFont(ofSize: 16)
         ]
         control.setTitleTextAttributes(selectedTextAttributes, for: .selected)
-        control.addTarget(self, action: #selector(segmentValueChanged(_:)), for: .valueChanged)
+        
         return control
     }()
     
@@ -64,10 +65,6 @@ class KHMenuView: UIView {
     weak var delegate: KHMenuViewDelegate?
     
     let orderView = OrderSheetController().view
-    
-    @objc func segmentValueChanged(_ sender: UISegmentedControl) {
-        delegate?.segmentValueChanged(to: sender.selectedSegmentIndex)
-    }
     
     // 밑줄 이동 메서드
     func moveUnderline(to index: Int) {
@@ -134,9 +131,7 @@ class KHMenuView: UIView {
         //        orderView!.snp.makeConstraints {
         //            $0.bottom.equalToSuperview().inset(20)
         //            $0.centerX.equalToSuperview()
-        //        }
-        
-        collectionView.register(SBMenuCell.self, forCellWithReuseIdentifier: "img")
+        //        }collectionView.register(SBMenuCell.self, forCellWithReuseIdentifier: "img")
         
         // 사용자 상호작용 가능 설정
         orderView!.isUserInteractionEnabled = true

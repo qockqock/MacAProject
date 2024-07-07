@@ -13,8 +13,6 @@ class OrderSheetController: UIViewController {
     //tvc 클래스 변수로 변환
     let tvc = TableViewController()
     
-    let orderListButton = UIButton()
-    
     var showModal = false
     
     //MARK: - override func
@@ -27,6 +25,7 @@ class OrderSheetController: UIViewController {
     
     // 홈에 있는 주문하기 버튼
     func paymentButton_Home() {
+        let orderListButton = UIButton()
         
         print("called - PaymentButton")
         // 버튼의 타이틀, 색상, 배경색, 폰트 설정
@@ -47,6 +46,11 @@ class OrderSheetController: UIViewController {
         
         // 버튼 클릭 시 모달 창 띄우기
         orderListButton.addTarget(self, action: #selector(showOrderListModal), for: .touchDown)
+    }
+    
+    // 대성 추가
+    @objc func showBasket() {
+        present(tvc, animated: true, completion: nil)
     }
     
     // 알림 옵저버 추가

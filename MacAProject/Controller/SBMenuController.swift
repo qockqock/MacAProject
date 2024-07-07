@@ -8,13 +8,20 @@
 
 import UIKit
 import SnapKit
-import SwiftUI
 
 class SBMenuController: UIViewController {
     
     // 카테고리 메뉴 배열
-    var drinks: [[CoffeeList]] = [CoffeeList.allArray, CoffeeList.recommended_Menu, CoffeeList.coffee_Menu, CoffeeList.beverage_Menu, CoffeeList.dessert_Menu, CoffeeList.do_not_eat_Menu]
+    var menus: [[CoffeeList]] = [
+        CoffeeList.allArray,
+        CoffeeList.recommended_Menu,
+        CoffeeList.coffee_Menu,
+        CoffeeList.beverage_Menu,
+        CoffeeList.dessert_Menu,
+        CoffeeList.do_not_eat_Menu
+    ]
     
+    // 현재 선택된 카테고리 인덱스
     var currentCategoryIndex: Int = 0
     
     // khMenuView = 로고, 카테고리 관련
@@ -31,9 +38,11 @@ class SBMenuController: UIViewController {
         
         khMenuView.collectionView.dataSource = self
         khMenuView.collectionView.delegate = self
+        khMenuView.collectionView.register(SBMenuCell.self, forCellWithReuseIdentifier: "img")
         
         khMenuView.segmentControl.addTarget(self, action: #selector(segmentValueChanged(_:)), for: .valueChanged)
     }
+
     @objc func segmentValueChanged(_ sender: UISegmentedControl) {
         currentCategoryIndex = sender.selectedSegmentIndex
         khMenuView.collectionView.reloadData()
@@ -47,21 +56,23 @@ class SBMenuController: UIViewController {
     
     // priceLabel Text에 , 추가하는 메서드
     private func formatPrice(_ price: String) -> String? {
-        guard let priceNumber = Double(price) else { return price }
-        let numberFormatter = NumberFormatter()
-        numberFormatter.numberStyle = .decimal
-        return numberFormatter.string(from: NSNumber(value: priceNumber))
+//        guard let priceNumber = Double(price) else { return price }
+//        let numberFormatter = NumberFormatter()
+//        numberFormatter.numberStyle = .decimal
+//        return numberFormatter.string(from: NSNumber(value: priceNumber))
+        guard let priceNumber = Int(price) else { return price }
+        return priceNumber.numberFormat()
     }
 }
 
 extension SBMenuController: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return drinks[currentCategoryIndex].count
+        return menus[currentCategoryIndex].count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "img", for: indexPath) as! SBMenuCell
-        let menuItem = drinks[currentCategoryIndex][indexPath.item]
+        let menuItem = menus[currentCategoryIndex][indexPath.item]
         cell.imgView.image = UIImage(named: menuItem.imageName)
         cell.beverageLabel.text = menuItem.menuName.replacingOccurrences(of: " ", with: "\n")
         //        cell.beverageLabel.text = "\(menuItem.menuName)"
@@ -75,14 +86,16 @@ extension SBMenuController: UICollectionViewDataSource, UICollectionViewDelegate
         }
         return cell
     }
-    //cell이 클릭 됬을때 동작함
+    
+    // cell이 클릭 됐을때 동작함
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let menuItem = drinks[currentCategoryIndex][indexPath.item]
-        let orderVC = TableViewController()
-        orderVC.menuItem = menuItem
-        orderVC.addOrder(imageName: menuItem.imageName, menuName: menuItem.menuName, menuPrice: menuItem.menuPrice)
+//        let menuItem = menus[currentCategoryIndex][indexPath.item]
+//        let orderVC = TableViewController()
+//        orderVC.menuItem = menuItem
+//        orderVC.addOrder(imageName: menuItem.imageName, menuName: menuItem.menuName, menuPrice: menuItem.menuPrice)
+        let menuItem = menus[currentCategoryIndex][indexPath.item]
+        Basket.stc.addItem(menuItem)
     }
-   
 }
 
 extension SBMenuController: UICollectionViewDelegateFlowLayout {
@@ -101,3 +114,4 @@ extension SBMenuController: UICollectionViewDelegateFlowLayout {
         return 0
     }
 }
+
