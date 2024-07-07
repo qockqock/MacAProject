@@ -17,7 +17,7 @@ protocol SBMenuCollectionViewCellDelegate: AnyObject {
     func didSelectCountButton(CoffeeList: CoffeeList)
 }
 
-// 컬
+// reloadData 관련
 protocol BasketViewControllerDelegate: AnyObject {
     func didUpdateBasket()
 }
