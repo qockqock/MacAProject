@@ -11,9 +11,10 @@ import SnapKit
 
 //MARK: - TableViewController 클래스: 테이블뷰를 관리하는 클래스
 class BasketViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
-    
     // 테이블뷰 인스턴스 생성
     private let tableView = UITableView()
+    
+    var total = 0
     
     // 바스켓 -> 대성 추가
     let basket = Basket.stc
@@ -65,7 +66,7 @@ class BasketViewController: UIViewController, UITableViewDataSource, UITableView
         totalPriceLabel.text = "총 상품금액"
         totalPriceLabel.font = .systemFont(ofSize: 16)
         
-        totalPriceNumLabel.text = "19,000원"  //수정해주세요!!
+        totalPriceNumLabel.text = "\(total)"  //수정해주세요!! -> 했어여!!!!!!!!!
         totalPriceNumLabel.font = .boldSystemFont(ofSize: 20)
         totalPriceNumLabel.textColor = .red
         
@@ -85,7 +86,8 @@ class BasketViewController: UIViewController, UITableViewDataSource, UITableView
         
         
         // 뷰에 버튼, 총 주문금액 ,라벨 추가하고 오토레이아웃 설정
-        [orderListLabel,totalPriceLabel, totalPriceNumLabel, paymentButton, deleteAllButton].forEach { view.addSubview($0) }
+        [orderListLabel,totalPriceLabel, totalPriceNumLabel, paymentButton, deleteAllButton].forEach { view.addSubview($0)
+        }
         
         orderListLabel.snp.makeConstraints {
             $0.leading.equalTo(deleteAllButton.snp.leading)
@@ -115,10 +117,6 @@ class BasketViewController: UIViewController, UITableViewDataSource, UITableView
             $0.trailing.equalToSuperview().inset(20)
             $0.width.equalTo(170)
         }
-        
-        
-        
-        // 결제하기 버튼 클릭 시 paymentSuccessAlert 메서드를 호출하도록 설정
         paymentButton.addTarget(self, action: #selector(paymentSuccessAlert), for: .touchDown)
         
         //전체삭제 버튼 클릭 시 메서드
@@ -170,16 +168,16 @@ class BasketViewController: UIViewController, UITableViewDataSource, UITableView
     
     
     func addOrder(imageName: String, menuName: String, menuPrice: String) {
-            let menuItem = CoffeeList(imageName: imageName, menuName: menuName, menuPrice: menuPrice)
-            orders.append(menuItem)
-            
-            // 주문이 추가된 후, 필요한 UI 업데이트 등을 수행할 수 있습니다.
-            print("Added Order: \(menuItem.menuName)")
-            
-            // 예시로, 주문이 추가될 때마다 테이블 뷰를 다시 로드하는 코드를 추가할 수 있습니다.
-            tableView.reloadData()
-        }
+        let menuItem = CoffeeList(imageName: imageName, menuName: menuName, menuPrice: menuPrice)
+        orders.append(menuItem)
+        
+        // 주문이 추가된 후, 필요한 UI 업데이트 등을 수행할 수 있습니다.
+        print("Added Order: \(menuItem.menuName)")
+        
+        // 예시로, 주문이 추가될 때마다 테이블 뷰를 다시 로드하는 코드를 추가할 수 있습니다.
+        tableView.reloadData()
     }
+    
     
     //MARK: - UITableViewDataSource Methods
     
@@ -197,29 +195,38 @@ class BasketViewController: UIViewController, UITableViewDataSource, UITableView
         
         // 대성 추가
         let order = basket.items[indexPath.row]
+        
+        var total = 0
+        
         cell.productImageView.image = UIImage(named: order.coffee.imageName)
         cell.productNameLabel.text = order.coffee.menuName
         cell.quantityLabel.text = "\(order.numbers)개"
         cell.priceLabel.text = "\(order.coffee.menuPrice)원"
         cell.selectionStyle = .none // 셀 선택 시 색상 변하지 않게 설정
         
-        
-        // 대성 추가
-        
-        
+        if let menuPrice = Int(order.coffee.menuPrice) {
+            let priceTotal = Int(menuPrice * order.numbers)
+            cell.priceLabel.text = "\(priceTotal)원"
+            
+            total = priceTotal
+//            total += priceTotal
+            print(total)
+            
+        }
+    
         // 증가 액션 처리
         cell.plusAction = {
+            total += total
             self.increaseQuantity(at: indexPath)
+            
         }
-        
         // 감소 액션 처리
         cell.minusAction = {
+            total -= total
             self.decreaseQuantity(at: indexPath)
         }
-        
         return cell
     }
-    
     func increaseQuantity(at indexPath: IndexPath) {
         let coffeeItem = basket.items[indexPath.row].coffee
         Basket.stc.addItem(coffeeItem)
