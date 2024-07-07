@@ -13,25 +13,16 @@ import SnapKit
 class BasketViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     // 테이블뷰 인스턴스 생성
     private let tableView = UITableView()
-    
-    var total = 0
-    
     // 바스켓 -> 대성 추가
     let basket = Basket.stc
+    
+    var basketItem: BasketItem!
     
     // 얼럿 관련
     var showModal = false
     
     // 주문 목록 배열
     var orders:[CoffeeList] = []
-    
-    // 샘플 데이터 배열 추가
-    //    let sampleData = [
-    //        ("유니콘 매직 프라페(블루)", 100, 39000),
-    //        ("유니콘 매직 프라페(레드)", 2, 4000),
-    //        ("유니콘 매직 프라페(그린)", 1, 4100)
-    //    ]
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,6 +48,7 @@ class BasketViewController: UIViewController, UITableViewDataSource, UITableView
         let paymentButton = UIButton()
         let deleteAllButton = UIButton()
         
+        
         //모달 내부의 주문 내역 라벨
         orderListLabel.text = "주문 상품"
         orderListLabel.textColor = .black
@@ -66,7 +58,7 @@ class BasketViewController: UIViewController, UITableViewDataSource, UITableView
         totalPriceLabel.text = "총 상품금액"
         totalPriceLabel.font = .systemFont(ofSize: 16)
         
-        totalPriceNumLabel.text = "\(total)"  //수정해주세요!! -> 했어여!!!!!!!!!
+        totalPriceNumLabel.text = "\(basketItem.totalPrice)"  //수정해주세요!! -> 했어여!!!!!!!!!
         totalPriceNumLabel.font = .boldSystemFont(ofSize: 20)
         totalPriceNumLabel.textColor = .red
         
@@ -194,9 +186,9 @@ class BasketViewController: UIViewController, UITableViewDataSource, UITableView
         }
         
         // 대성 추가
-        let order = basket.items[indexPath.row]
+        var order = basket.items[indexPath.row]
         
-        var total = 0
+        var num = 0
         
         cell.productImageView.image = UIImage(named: order.coffee.imageName)
         cell.productNameLabel.text = order.coffee.menuName
@@ -208,23 +200,18 @@ class BasketViewController: UIViewController, UITableViewDataSource, UITableView
             let priceTotal = Int(menuPrice * order.numbers)
             cell.priceLabel.text = "\(priceTotal)원"
             
-            total = priceTotal
-//            total += priceTotal
-            print(total)
-            
+            num += priceTotal
         }
-    
-        // 증가 액션 처리
-        cell.plusAction = {
-            total += total
-            self.increaseQuantity(at: indexPath)
-            
-        }
-        // 감소 액션 처리
-        cell.minusAction = {
-            total -= total
-            self.decreaseQuantity(at: indexPath)
-        }
+        
+            cell.plusAction = {
+                self.increaseQuantity(at: indexPath)
+                order.totalPrice += num
+            }
+            // 감소 액션 처리
+            cell.minusAction = {
+                self.decreaseQuantity(at: indexPath)
+                order.totalPrice -= num
+            }
         return cell
     }
     func increaseQuantity(at indexPath: IndexPath) {
