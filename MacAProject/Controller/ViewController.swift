@@ -14,6 +14,7 @@ class ViewController: UIViewController {
         let animationView: LottieAnimationView = .init(name: "coffee")
         animationView.frame = self.view.bounds  //전체화면
         animationView.contentMode = .scaleAspectFit  //화면에 가득 차게
+        animationView.animationSpeed = 2
         
         self.view.addSubview(animationView)
         
@@ -21,7 +22,6 @@ class ViewController: UIViewController {
             if finished {
                 // 애니메이션이 종료되면 animationView를 제거
                 animationView.removeFromSuperview()
-                animationView.animationSpeed = 2
                 self.setupControllers()
             }
         }

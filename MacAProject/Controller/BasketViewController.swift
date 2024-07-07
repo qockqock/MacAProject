@@ -181,7 +181,7 @@ class BasketViewController: UIViewController, UITableViewDataSource, UITableView
         cell.productNameLabel.text = order.coffee.menuName
         cell.quantityLabel.text = "\(order.numbers)개"
         cell.priceLabel.text = "\(order.coffee.menuPrice)원"
-//        cell.selectionStyle = .none // 셀 선택 시 색상 변하지 않게 설정
+        cell.selectionStyle = .none // 셀 선택 시 색상 변하지 않게 설정
         
         
         // 대성 추가
