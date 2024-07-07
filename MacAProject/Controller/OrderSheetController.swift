@@ -25,7 +25,7 @@ class OrderSheetController: UIViewController {
         addNotiObserver()
     }
     
-    // 홈에 있는 주문하기 버튼
+    // 홈에 있는 주문상품 버튼
     func paymentButton_Home() {
         print("called - PaymentButton")
         // 버튼의 타이틀, 색상, 배경색, 폰트 설정
