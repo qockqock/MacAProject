@@ -32,7 +32,10 @@ class Basket{
         if let index = items.firstIndex(where: { $0.coffee.menuName == coffee.menuName }) {
             items[index].numbers -= 1
             if items[index].numbers == 0 {
+                print("응애 나 지워짐")
                 items.remove(at: index)
+            }else {
+                return
             }
         }
     }

@@ -236,6 +236,11 @@ class BasketViewController: UIViewController, UITableViewDataSource, UITableView
     func decreaseQuantity(at indexPath: IndexPath) {
         let coffeeItem = basket.items[indexPath.row].coffee
         Basket.stc.removeItem(coffeeItem)
-        tableView.reloadRows(at: [indexPath], with: .automatic)
+        
+        if basket.items.indices.contains(indexPath.row) {
+            tableView.reloadRows(at: [indexPath], with: .automatic)
+        } else {
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+        }
     }
 }

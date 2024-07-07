@@ -91,11 +91,21 @@ class SBMenuController: UIViewController {
 }
 extension SBMenuController: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return menus[currentCategoryIndex].count
+        let itemCount = menus[currentCategoryIndex].count
+        
+        // 0인지 확인 (예외처리) - 대성
+        khMenuView.updateEmptyState(isEmpty: itemCount == 0)
+        return itemCount
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "img", for: indexPath) as! SBMenuCell
+        
+        // 0인지 확인 (예외처리) - 대성
+        guard menus[currentCategoryIndex].indices.contains(indexPath.item) else {
+            return cell// 아무것도 하지 않음
+        }
+        
         let menuItem = menus[currentCategoryIndex][indexPath.item]
         cell.imgView.image = UIImage(named: menuItem.imageName)
         cell.beverageLabel.text = menuItem.menuName.replacingOccurrences(of: " ", with: "\n")
@@ -113,10 +123,11 @@ extension SBMenuController: UICollectionViewDataSource, UICollectionViewDelegate
     
     // cell이 클릭 됐을때 동작함
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        let menuItem = menus[currentCategoryIndex][indexPath.item]
-//        let orderVC = TableViewController()
-//        orderVC.menuItem = menuItem
-//        orderVC.addOrder(imageName: menuItem.imageName, menuName: menuItem.menuName, menuPrice: menuItem.menuPrice)
+       // 0인지 확인 (예외 처리) - 대성
+        guard menus[currentCategoryIndex].indices.contains(indexPath.item) else {
+            return // 아무것도 하지 않음
+        }
+    
         let menuItem = menus[currentCategoryIndex][indexPath.item]
         Basket.stc.addItem(menuItem)
         showToast()
