@@ -71,10 +71,14 @@ class KHMenuView: UIView {
     
     // 밑줄 이동 메서드
     func moveUnderline(to index: Int) {
+        guard let title = segmentControl.titleForSegment(at: index) else { return }
+        let attributes: [NSAttributedString.Key: Any] = segmentControl.titleTextAttributes(for: .selected) ?? [:]
+        let titleWidth = (title as NSString).size(withAttributes: attributes).width
         let segmentWidth = segmentControl.frame.width / CGFloat(categories.count)
-        let leadingConstraint = segmentWidth * CGFloat(index)
+        let leadingConstraint = segmentWidth * CGFloat(index) + (segmentWidth - titleWidth) / 2
         UIView.animate(withDuration: 0.3) {
             self.underlineView.snp.updateConstraints {
+                $0.width.equalTo(titleWidth)
                 $0.leading.equalToSuperview().offset(leadingConstraint)
             }
             self.layoutIfNeeded()
@@ -114,9 +118,9 @@ class KHMenuView: UIView {
         // 밑줄 Constraints
         underlineView.snp.makeConstraints {
             $0.top.equalTo(segmentControl.snp.bottom)
-            $0.width.equalTo(segmentControl.snp.width).dividedBy(categories.count)
             $0.height.equalTo(2)
             $0.leading.equalToSuperview()
+            $0.width.equalTo(segmentControl.subviews[0].frame.width)
         }
         
         // 컬렉션뷰(메뉴 리스트) Constraints

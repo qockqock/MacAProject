@@ -42,14 +42,7 @@ class SBMenuController: UIViewController {
     
     // 밑줄 이동 메서드
     private func moveUnderline(to index: Int) {
-        let segmentWidth = khMenuView.segmentControl.frame.width / CGFloat(khMenuView.segmentControl.numberOfSegments)
-        let leadingConstraint = segmentWidth * CGFloat(index) + 10 // 10은 여유로운 여백
-        UIView.animate(withDuration: 0.3) {
-            self.khMenuView.underlineView.snp.updateConstraints {
-                $0.leading.equalToSuperview().offset(leadingConstraint)
-            }
-            self.view.layoutIfNeeded()
-        }
+        khMenuView.moveUnderline(to: index)
     }
     
     // priceLabel Text에 , 추가하는 메서드

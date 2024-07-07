@@ -86,7 +86,7 @@ extension CoffeeList{
         CoffeeList(imageName: "bs_Icedbubblelatte", menuName: "아이스 흑당버블라떼", menuPrice: "5500"),
         CoffeeList(imageName: "cucumber_Limemojito", menuName: "오이오이 라임오히또", menuPrice: "4800"),
         CoffeeList(imageName: "grapefruit_honey_bt_Iced", menuName: "아이스 허니자몽블랙티", menuPrice: "4900"),
-        CoffeeList(imageName: "ggultip_Option", menuName: "꿀팁옵션", menuPrice: "3800")
+        CoffeeList(imageName: "ggultip_Option", menuName: "꿀팁옵션 (타버린사이다)", menuPrice: "3800")
     ]
     
 //    static let tea_Menu = [
