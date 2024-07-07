@@ -2,19 +2,37 @@
 
 import UIKit
 import SnapKit
-import SwiftUI
+import Lottie
 
 class ViewController: UIViewController {
     
     let menuController = SBMenuController()
     let orderController  = OrderSheetController()
     
+    private func showLaunchScreen() {
+        //런치스크린
+        let animationView: LottieAnimationView = .init(name: "coffee")
+        animationView.frame = self.view.bounds  //전체화면
+        animationView.contentMode = .scaleAspectFit  //화면에 가득 차게
+        
+        self.view.addSubview(animationView)
+        
+        animationView.play{ (finished) in
+            if finished {
+                // 애니메이션이 종료되면 animationView를 제거
+                animationView.removeFromSuperview()
+                self.setupControllers()
+            }
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
         print("Called ViewController - Run App")
         view.backgroundColor = .white
-        
-        setupControllers()
+        showLaunchScreen()
     }
     
     private func setupControllers() {
