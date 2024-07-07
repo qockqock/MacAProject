@@ -14,7 +14,7 @@ struct BasketItem{
 
 class Basket{
     static let stc = Basket()
-    private(set) var items: [BasketItem] = []
+    var items: [BasketItem] = []
     
     private init(){}
     

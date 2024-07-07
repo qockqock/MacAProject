@@ -12,27 +12,17 @@ import SnapKit
 //MARK: - TableViewController 클래스: 테이블뷰를 관리하는 클래스
 class BasketViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
-    var basketData = Basket.stc
     // 테이블뷰 인스턴스 생성
     private let tableView = UITableView()
     
-    // 바스켓 대성 추가
+    // 바스켓 -> 대성 추가
     let basket = Basket.stc
     
     // 얼럿 관련
     var showModal = false
     
-//    var menuItem: CoffeeList?
-    
+    // 주문 목록 배열
     var orders:[CoffeeList] = []
-    
-    // 샘플 데이터 배열 추가
-//    let sampleData = [
-//        ("유니콘 매직 프라페(블루)", 100, 39000),
-//        ("유니콘 매직 프라페(레드)", 2, 4000),
-//        ("유니콘 매직 프라페(그린)", 1, 4100)
-//    ]
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -154,6 +144,7 @@ class BasketViewController: UIViewController, UITableViewDataSource, UITableView
             tableView.reloadData()
         }
     
+    //MARK: - UITableViewDataSource Methods
     
     // 테이블뷰의 섹션당 셀의 개수 설정
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -165,7 +156,7 @@ class BasketViewController: UIViewController, UITableViewDataSource, UITableView
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "cellID", for: indexPath) as? OrderMakeCell else {
             return UITableViewCell()
         }
-      
+        
         // 대성 추가
         let order = basket.items[indexPath.row]
         cell.productImageView.image = UIImage(named: order.coffee.imageName)
@@ -173,7 +164,28 @@ class BasketViewController: UIViewController, UITableViewDataSource, UITableView
         cell.quantityLabel.text = "\(order.numbers)개"
         cell.priceLabel.text = "\(order.coffee.menuPrice)원"
         
+        // 증가 액션 처리
+        cell.plusAction = {
+            self.increaseQuantity(at: indexPath)
+        }
+        
+        // 감소 액션 처리
+        cell.minusAction = {
+            self.decreaseQuantity(at: indexPath)
+        }
+        
         return cell
     }
-
+    
+    func increaseQuantity(at indexPath: IndexPath) {
+        let coffeeItem = basket.items[indexPath.row].coffee
+        Basket.stc.addItem(coffeeItem)
+        tableView.reloadRows(at: [indexPath], with: .automatic)
+    }
+    
+    func decreaseQuantity(at indexPath: IndexPath) {
+        let coffeeItem = basket.items[indexPath.row].coffee
+        Basket.stc.removeItem(coffeeItem)
+        tableView.reloadRows(at: [indexPath], with: .automatic)
+    }
 }

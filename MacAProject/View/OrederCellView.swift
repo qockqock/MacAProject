@@ -18,24 +18,34 @@ class OrderMakeCell: UITableViewCell {
     let subtractButton = UIButton(type: .system)
     let deleteButton = UIButton(type: .system)
     
+    var plusAction: (() -> Void)?
+    var minusAction: (() -> Void)?
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         addSubViews()
         setupConstraints()
     }
     
+    @objc func addButtonTapped() {
+        plusAction?()
+    }
+    
+    @objc func minusButtonTapped() {
+        minusAction?()
+    }
+    
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     func addSubViews() {
-        contentView.addSubview(productImageView)
-        contentView.addSubview(productNameLabel)
-        contentView.addSubview(quantityLabel)
-        contentView.addSubview(priceLabel)
-        contentView.addSubview(addButton)
-        contentView.addSubview(subtractButton)
-        contentView.addSubview(deleteButton)
+        [productImageView, productNameLabel, quantityLabel, addButton, subtractButton, priceLabel, deleteButton].forEach{
+            contentView.addSubview($0)
+        }
+//        addButton.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
+//        subtractButton.addTarget(self, action: #selector(minusButtonTapped), for: .touchUpInside)
         
         productImageView.contentMode = .scaleAspectFit
         productNameLabel.font = .boldSystemFont(ofSize: 16)
@@ -60,8 +70,8 @@ class OrderMakeCell: UITableViewCell {
         deleteButton.setTitleColor(.systemPink, for: .normal)
         deleteButton.backgroundColor = #colorLiteral(red: 0.8749070764, green: 0.8814653754, blue: 0.9251363873, alpha: 1)
         deleteButton.titleLabel?.font = .boldSystemFont(ofSize: 16)
-      
     }
+
     
     func setupConstraints() {
         productImageView.snp.makeConstraints {
