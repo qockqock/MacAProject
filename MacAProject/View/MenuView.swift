@@ -59,6 +59,15 @@ class KHMenuView: UIView {
         return cv
     }()
     
+    // 메뉴 경고
+    let emptyStateLabel: UILabel = {
+        let label = UILabel()
+        label.text = "메뉴가 없습니다"
+        label.textAlignment = .center
+        label.isHidden = true
+        return label
+    }()
+    
     // 카테고리 종류 생성
     let categories = ["전체", "추천메뉴", "커피", "음료", "디저트", "왜먹어?"]
     
@@ -80,6 +89,11 @@ class KHMenuView: UIView {
             }
             self.layoutIfNeeded()
         }
+    }
+    
+    // 기존 메서드 유지
+    func updateEmptyState(isEmpty: Bool) {
+        emptyStateLabel.isHidden = !isEmpty
     }
     
     override init(frame: CGRect) {
@@ -126,12 +140,6 @@ class KHMenuView: UIView {
             $0.leading.trailing.equalToSuperview().inset(UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20))
             $0.height.equalTo(500)
         }
-        
-        // orderView Constraints - 마지막에 추가
-        //        orderView!.snp.makeConstraints {
-        //            $0.bottom.equalToSuperview().inset(20)
-        //            $0.centerX.equalToSuperview()
-        //        }collectionView.register(SBMenuCell.self, forCellWithReuseIdentifier: "img")
         
         // 사용자 상호작용 가능 설정
         orderView!.isUserInteractionEnabled = true
