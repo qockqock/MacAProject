@@ -49,7 +49,10 @@ class OrderMakeCell: UITableViewCell {
         
         productImageView.contentMode = .scaleAspectFit
         productNameLabel.font = .boldSystemFont(ofSize: 16)
+        
         quantityLabel.font = .systemFont(ofSize: 16)
+        quantityLabel.textAlignment = .center
+        
         priceLabel.font = .boldSystemFont(ofSize: 18)
         priceLabel.textAlignment = .right
         
@@ -87,19 +90,20 @@ class OrderMakeCell: UITableViewCell {
         }
         
         addButton.snp.makeConstraints {
-            $0.leading.equalTo(productNameLabel.snp.leading)
+            $0.leading.equalTo(quantityLabel.snp.trailing)
             $0.top.equalTo(productNameLabel.snp.bottom).offset(10)
             $0.bottom.equalToSuperview().inset(10)
             $0.width.height.equalTo(20)
         }
         
         quantityLabel.snp.makeConstraints {
-            $0.leading.equalTo(addButton.snp.trailing).offset(10)
+            $0.leading.equalTo(subtractButton.snp.trailing)
             $0.centerY.equalTo(addButton.snp.centerY)
+            $0.width.equalTo(50)
         }
         
         subtractButton.snp.makeConstraints {
-            $0.leading.equalTo(quantityLabel.snp.trailing).offset(10)
+            $0.leading.equalTo(productImageView.snp.trailing).offset(10)
             $0.centerY.equalTo(addButton.snp.centerY)
             $0.width.height.equalTo(20)
         }

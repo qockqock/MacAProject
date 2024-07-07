@@ -24,6 +24,14 @@ class BasketViewController: UIViewController, UITableViewDataSource, UITableView
     // 주문 목록 배열
     var orders:[CoffeeList] = []
     
+    // 샘플 데이터 배열 추가
+    //    let sampleData = [
+    //        ("유니콘 매직 프라페(블루)", 100, 39000),
+    //        ("유니콘 매직 프라페(레드)", 2, 4000),
+    //        ("유니콘 매직 프라페(그린)", 1, 4100)
+    //    ]
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -90,7 +98,7 @@ class BasketViewController: UIViewController, UITableViewDataSource, UITableView
         }
         
         totalPriceNumLabel.snp.makeConstraints {
-            $0.trailing.equalTo(paymentButton.snp.trailing)
+            $0.trailing.equalTo(paymentButton.snp.trailing).offset(-5)
             $0.bottom.equalTo(paymentButton.snp.top).offset(-10)
         }
         
@@ -108,11 +116,14 @@ class BasketViewController: UIViewController, UITableViewDataSource, UITableView
             $0.width.equalTo(170)
         }
         
-
         
         
-        // 버튼 클릭 시 paymentSuccessAlert 메서드를 호출하도록 설정
+        // 결제하기 버튼 클릭 시 paymentSuccessAlert 메서드를 호출하도록 설정
         paymentButton.addTarget(self, action: #selector(paymentSuccessAlert), for: .touchDown)
+        
+        //전체삭제 버튼 클릭 시 메서드
+        deleteAllButton.addTarget(self, action: #selector(delteAll), for: .touchDown)
+        
     }
     
     //MARK: - 결제 성공 알림 메서드 Alert
@@ -126,8 +137,7 @@ class BasketViewController: UIViewController, UITableViewDataSource, UITableView
             showModal = true
             //노티로 데이터 전달
             NotificationCenter.default.post(name: NSNotification.Name("notiData"), object:nil, userInfo: ["showModal" : showModal])
-            Basket.stc.clearAll()
-            tableView.reloadData()
+            delteAll()
         }
         alert.addAction(closeAction)
         
@@ -135,10 +145,17 @@ class BasketViewController: UIViewController, UITableViewDataSource, UITableView
         self.present(alert, animated: true, completion: nil)
     }
     
+    @objc
+    func delteAll(){
+        Basket.stc.clearAll()
+        tableView.reloadData()
+    }
+    
     @objc func paymentButtonTapped() {
         // 결제 로직이 성공적으로 끝났다고 가정하고 paymentSuccessAlert를 호출합니다.
         paymentSuccessAlert()
     }
+    
     
     // 테이블뷰 오토레이아웃 설정
     func setupTableviewConstraints() {
@@ -151,6 +168,7 @@ class BasketViewController: UIViewController, UITableViewDataSource, UITableView
         }
     }
     
+    
     func addOrder(imageName: String, menuName: String, menuPrice: String) {
             let menuItem = CoffeeList(imageName: imageName, menuName: menuName, menuPrice: menuPrice)
             orders.append(menuItem)
@@ -161,6 +179,7 @@ class BasketViewController: UIViewController, UITableViewDataSource, UITableView
             // 예시로, 주문이 추가될 때마다 테이블 뷰를 다시 로드하는 코드를 추가할 수 있습니다.
             tableView.reloadData()
         }
+    }
     
     //MARK: - UITableViewDataSource Methods
     
@@ -168,6 +187,7 @@ class BasketViewController: UIViewController, UITableViewDataSource, UITableView
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return basket.items.count
     }
+    
     
     // 셀의 내용을 설정하는 메서드
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -181,7 +201,7 @@ class BasketViewController: UIViewController, UITableViewDataSource, UITableView
         cell.productNameLabel.text = order.coffee.menuName
         cell.quantityLabel.text = "\(order.numbers)개"
         cell.priceLabel.text = "\(order.coffee.menuPrice)원"
-//        cell.selectionStyle = .none // 셀 선택 시 색상 변하지 않게 설정
+        cell.selectionStyle = .none // 셀 선택 시 색상 변하지 않게 설정
         
         
         // 대성 추가
