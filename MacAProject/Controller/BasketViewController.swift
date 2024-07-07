@@ -59,7 +59,8 @@ class BasketViewController: UIViewController, UITableViewDataSource, UITableView
         totalPriceLabel.text = "총 상품금액"
         totalPriceLabel.font = .systemFont(ofSize: 16)
         
-        totalPriceNumLabel.text = "\(basketItem.totalPrice)"  //수정해주세요!! -> 했어여!!!!!!!!!
+        let sum = Basket.stc.calculateTotalPrice()
+        totalPriceNumLabel.text = "\(sum)"
         totalPriceNumLabel.font = .boldSystemFont(ofSize: 20)
         totalPriceNumLabel.textColor = .red
         
@@ -187,7 +188,7 @@ class BasketViewController: UIViewController, UITableViewDataSource, UITableView
         }
         
         // 대성 추가
-        let order = basket.items[indexPath.row]
+        var order = basket.items[indexPath.row]
         
         var num = 0
         

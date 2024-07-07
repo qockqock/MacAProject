@@ -24,7 +24,7 @@ class Basket{
         if let index = items.firstIndex(where: { $0.coffee.menuName == coffee.menuName }) {
             items[index].numbers += 1
         } else {
-            items.append(BasketItem(coffee: coffee, numbers: 1, totalPrice: 0))
+            items.append(BasketItem(coffee: coffee, numbers: 1, totalPrice: Int(coffee.menuPrice) ?? 0 ))
         }
     }
     
@@ -44,5 +44,12 @@ class Basket{
     // 초기화
     func clearAll() {
         items.removeAll()
+    }
+    
+    // 계산로직
+    func calculateTotalPrice() -> Int {
+        return items.reduce(0) { (result, item) -> Int in
+            return result + (item.numbers * (Int(item.coffee.menuPrice) ?? 0))
+        }
     }
 }
