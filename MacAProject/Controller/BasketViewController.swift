@@ -212,22 +212,20 @@ class BasketViewController: UIViewController, UITableViewDataSource, UITableView
                 self.decreaseQuantity(at: indexPath)
                 order.totalPrice -= num
             }
+
         return cell
-    }
-    func increaseQuantity(at indexPath: IndexPath) {
-        let coffeeItem = basket.items[indexPath.row].coffee
-        Basket.stc.addItem(coffeeItem)
-        tableView.reloadRows(at: [indexPath], with: .automatic)
-    }
-    
-    func decreaseQuantity(at indexPath: IndexPath) {
-        let coffeeItem = basket.items[indexPath.row].coffee
-        Basket.stc.removeItem(coffeeItem)
-        
-        if basket.items.indices.contains(indexPath.row) {
-            tableView.reloadRows(at: [indexPath], with: .automatic)
-        } else {
-            tableView.deleteRows(at: [indexPath], with: .automatic)
         }
-    }
+
+        func increaseQuantity(at indexPath: IndexPath) {
+            let coffeeItem = basket.items[indexPath.row].coffee
+            Basket.stc.addItem(coffeeItem)
+            tableView.reloadRows(at: [indexPath], with: .automatic)
+        }
+
+        func decreaseQuantity(at indexPath: IndexPath) {
+            let coffeeItem = basket.items[indexPath.row].coffee
+            Basket.stc.removeItem(coffeeItem)
+            tableView.reloadData()
+        }
+
 }
