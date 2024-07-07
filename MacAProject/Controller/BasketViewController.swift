@@ -52,10 +52,11 @@ class BasketViewController: UIViewController, UITableViewDataSource, UITableView
     
     //MARK: - 모달 내부에 있는 결제 Btn 함수
     func paymentButton_Modal() {
-        let orderListButton = UIButton()
         let orderListLabel = UILabel()
         let totalPriceLabel = UILabel()
         var totalPriceNumLabel = UILabel()
+        let paymentButton = UIButton()
+        let deleteAllButton = UIButton()
         
         //모달 내부의 주문 내역 라벨
         orderListLabel.text = "주문 상품"
@@ -70,41 +71,58 @@ class BasketViewController: UIViewController, UITableViewDataSource, UITableView
         totalPriceNumLabel.font = .boldSystemFont(ofSize: 20)
         totalPriceNumLabel.textColor = .red
         
-        // 버튼의 타이틀, 색상, 배경색, 폰트 설정
-        orderListButton.setTitle("결제하기", for: .normal)
-        orderListButton.setTitleColor(.white, for: .normal)
-        orderListButton.backgroundColor = #colorLiteral(red: 0.2734747827, green: 0.1341301203, blue: 0.003133529332, alpha: 1)
-        orderListButton.titleLabel?.font = .boldSystemFont(ofSize: 22)
-        orderListButton.layer.cornerRadius = 10
+        //결제하기 버튼의 타이틀, 색상, 배경색, 폰트 설정
+        paymentButton.setTitle("결제하기", for: .normal)
+        paymentButton.setTitleColor(.white, for: .normal)
+        paymentButton.backgroundColor = #colorLiteral(red: 0.2734747827, green: 0.1341301203, blue: 0.003133529332, alpha: 1)
+        paymentButton.titleLabel?.font = .boldSystemFont(ofSize: 22)
+        paymentButton.layer.cornerRadius = 10
+        
+        //전체 삭제 버튼의 타이틀, 색상, 배경색, 폰트 설정
+        deleteAllButton.setTitle("전체삭제", for: .normal)
+        deleteAllButton.setTitleColor(#colorLiteral(red: 0.2734747827, green: 0.1341301203, blue: 0.003133529332, alpha: 1), for: .normal)
+        deleteAllButton.backgroundColor = #colorLiteral(red: 0.9085021615, green: 0.8936178088, blue: 0.8809486628, alpha: 1)
+        deleteAllButton.titleLabel?.font = .boldSystemFont(ofSize: 22)
+        deleteAllButton.layer.cornerRadius = 10
+        
         
         // 뷰에 버튼, 총 주문금액 ,라벨 추가하고 오토레이아웃 설정
-        [orderListLabel,totalPriceLabel, totalPriceNumLabel, orderListButton].forEach { view.addSubview($0) }
+        [orderListLabel,totalPriceLabel, totalPriceNumLabel, paymentButton, deleteAllButton].forEach { view.addSubview($0) }
         
         orderListLabel.snp.makeConstraints {
-            $0.leading.equalTo(orderListButton.snp.leading)
+            $0.leading.equalTo(deleteAllButton.snp.leading)
             $0.top.equalToSuperview().inset(20)
         }
         
         totalPriceLabel.snp.makeConstraints {
-            $0.leading.equalTo(orderListButton.snp.leading)
-            $0.bottom.equalTo(orderListButton.snp.top).offset(-10)
+            $0.leading.equalTo(deleteAllButton.snp.leading)
+            $0.bottom.equalTo(paymentButton.snp.top).offset(-10)
         }
         
         totalPriceNumLabel.snp.makeConstraints {
-            $0.trailing.equalTo(orderListButton.snp.trailing)
-            $0.bottom.equalTo(orderListButton.snp.top).offset(-10)
+            $0.trailing.equalTo(paymentButton.snp.trailing)
+            $0.bottom.equalTo(paymentButton.snp.top).offset(-10)
         }
         
-        orderListButton.snp.makeConstraints {
+        deleteAllButton.snp.makeConstraints {
             $0.bottom.equalToSuperview().inset(40)
             $0.height.equalTo(58)
-            $0.width.equalTo(350)
-            $0.centerX.equalToSuperview()
+            $0.leading.equalToSuperview().inset(20)
+            $0.width.equalTo(170)
         }
+        
+        paymentButton.snp.makeConstraints {
+            $0.bottom.equalToSuperview().inset(40)
+            $0.height.equalTo(58)
+            $0.trailing.equalToSuperview().inset(20)
+            $0.width.equalTo(170)
+        }
+        
+
         
         
         // 버튼 클릭 시 paymentSuccessAlert 메서드를 호출하도록 설정
-        orderListButton.addTarget(self, action: #selector(paymentSuccessAlert), for: .touchDown)
+        paymentButton.addTarget(self, action: #selector(paymentSuccessAlert), for: .touchDown)
     }
     
     //MARK: - 결제 성공 알림 메서드 Alert
@@ -176,6 +194,7 @@ class BasketViewController: UIViewController, UITableViewDataSource, UITableView
         cell.productNameLabel.text = order.coffee.menuName
         cell.quantityLabel.text = "\(order.numbers)개"
         cell.priceLabel.text = "\(order.coffee.menuPrice)원"
+//        cell.selectionStyle = .none // 셀 선택 시 색상 변하지 않게 설정
         
         return cell
     }
