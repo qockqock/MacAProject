@@ -11,7 +11,7 @@ import SnapKit
 //MARK: - OrderSheetController 클래스: 주문 내역 버튼을 관리하는 클래스
 class OrderSheetController: UIViewController {
     //tvc 클래스 변수로 변환
-    let tvc = TableViewController()
+    let tvc = BasketViewController()
     
     var showModal = false
     

@@ -38,7 +38,7 @@ class Basket{
     }
     
     // 초기화
-    func clear() {
+    func clearAll() {
         items.removeAll()
     }
 }
