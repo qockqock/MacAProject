@@ -95,7 +95,6 @@ class OrderSheetController: UIViewController {
     func showOrderButton(_ notification: Notification) {
         if let showModal = notification.userInfo?["showModal"] as? Bool {
             self.showModal = showModal
-            print("showModal: \(showModal)")
         }
         UIView.animate(withDuration: 0.5) {
             // 버튼을 초기 위치로 되돌림
