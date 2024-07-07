@@ -209,38 +209,35 @@ class BasketViewController: UIViewController, UITableViewDataSource, UITableView
             cell.priceLabel.text = "\(priceTotal)원"
             
             total = priceTotal
-//            total += priceTotal
             print(total)
             
         }
     
         // 증가 액션 처리
         cell.plusAction = {
-            total += total
+            total += 1 // total을 1씩 증가시키는 예시
             self.increaseQuantity(at: indexPath)
-            
         }
+
         // 감소 액션 처리
         cell.minusAction = {
-            total -= total
+            total -= 1 // total을 1씩 감소시키는 예시
             self.decreaseQuantity(at: indexPath)
         }
+
         return cell
-    }
-    func increaseQuantity(at indexPath: IndexPath) {
-        let coffeeItem = basket.items[indexPath.row].coffee
-        Basket.stc.addItem(coffeeItem)
-        tableView.reloadRows(at: [indexPath], with: .automatic)
-    }
-    
-    func decreaseQuantity(at indexPath: IndexPath) {
-        let coffeeItem = basket.items[indexPath.row].coffee
-        Basket.stc.removeItem(coffeeItem)
-        
-        if basket.items.indices.contains(indexPath.row) {
-            tableView.reloadRows(at: [indexPath], with: .automatic)
-        } else {
-            tableView.deleteRows(at: [indexPath], with: .automatic)
         }
-    }
+
+        func increaseQuantity(at indexPath: IndexPath) {
+            let coffeeItem = basket.items[indexPath.row].coffee
+            Basket.stc.addItem(coffeeItem)
+            tableView.reloadRows(at: [indexPath], with: .automatic)
+        }
+
+        func decreaseQuantity(at indexPath: IndexPath) {
+            let coffeeItem = basket.items[indexPath.row].coffee
+            Basket.stc.removeItem(coffeeItem)
+            tableView.reloadData()
+        }
+
 }
