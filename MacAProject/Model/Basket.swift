@@ -10,6 +10,7 @@ import Foundation
 struct BasketItem{
     let coffee: CoffeeList
     var numbers: Int // 갯수
+    var totalPrice: Int
 }
 
 class Basket{
@@ -23,7 +24,7 @@ class Basket{
         if let index = items.firstIndex(where: { $0.coffee.menuName == coffee.menuName }) {
             items[index].numbers += 1
         } else {
-            items.append(BasketItem(coffee: coffee, numbers: 1))
+            items.append(BasketItem(coffee: coffee, numbers: 1, totalPrice: 0))
         }
     }
     

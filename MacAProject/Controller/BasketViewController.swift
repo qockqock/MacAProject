@@ -14,11 +14,10 @@ class BasketViewController: UIViewController, UITableViewDataSource, UITableView
     weak var delegate: BasketViewControllerDelegate?
     // 테이블뷰 인스턴스 생성
     private let tableView = UITableView()
-    
-    var total = 0
-    
     // 바스켓 -> 대성 추가
     let basket = Basket.stc
+    
+    var basketItem: BasketItem!
     
     // 얼럿 관련
     var showModal = false
@@ -26,13 +25,8 @@ class BasketViewController: UIViewController, UITableViewDataSource, UITableView
     // 주문 목록 배열
     var orders:[CoffeeList] = []
     
-    // 오류수정 코드
-//    let bug = OrderSheetController()
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         view.backgroundColor = .white
         
         tableView.dataSource = self
@@ -55,6 +49,7 @@ class BasketViewController: UIViewController, UITableViewDataSource, UITableView
         let paymentButton = UIButton()
         let deleteAllButton = UIButton()
         
+        
         //모달 내부의 주문 내역 라벨
         orderListLabel.text = "주문 상품"
         orderListLabel.textColor = .black
@@ -64,7 +59,7 @@ class BasketViewController: UIViewController, UITableViewDataSource, UITableView
         totalPriceLabel.text = "총 상품금액"
         totalPriceLabel.font = .systemFont(ofSize: 16)
         
-        totalPriceNumLabel.text = "\(total)"  //수정해주세요!! -> 했어여!!!!!!!!!
+        totalPriceNumLabel.text = "\(basketItem.totalPrice)"  //수정해주세요!! -> 했어여!!!!!!!!!
         totalPriceNumLabel.font = .boldSystemFont(ofSize: 20)
         totalPriceNumLabel.textColor = .red
         
@@ -134,7 +129,6 @@ class BasketViewController: UIViewController, UITableViewDataSource, UITableView
             //노티로 데이터 전달
             NotificationCenter.default.post(name: NSNotification.Name("notiData"), object:nil, userInfo: ["showModal" : showModal])
             delteAll()
-//            bug.showOrderListModal()
         }
         alert.addAction(closeAction)
         
@@ -144,7 +138,6 @@ class BasketViewController: UIViewController, UITableViewDataSource, UITableView
     
     @objc
     func delteAll(){
-//        bug.showOrderListModal()
         Basket.stc.clearAll()
         tableView.reloadData()
     }
@@ -196,7 +189,7 @@ class BasketViewController: UIViewController, UITableViewDataSource, UITableView
         // 대성 추가
         let order = basket.items[indexPath.row]
         
-        var total = 0
+        var num = 0
         
         cell.productImageView.image = UIImage(named: order.coffee.imageName)
         cell.productNameLabel.text = order.coffee.menuName
@@ -208,22 +201,18 @@ class BasketViewController: UIViewController, UITableViewDataSource, UITableView
             let priceTotal = Int(menuPrice * order.numbers)
             cell.priceLabel.text = "\(priceTotal)원"
             
-            total = priceTotal
-            print(total)
-            
+            num += priceTotal
         }
-    
-        // 증가 액션 처리
-        cell.plusAction = {
-            total += 1 // total을 1씩 증가시키는 예시
-            self.increaseQuantity(at: indexPath)
-        }
-
-        // 감소 액션 처리
-        cell.minusAction = {
-            total -= 1 // total을 1씩 감소시키는 예시
-            self.decreaseQuantity(at: indexPath)
-        }
+        
+            cell.plusAction = {
+                self.increaseQuantity(at: indexPath)
+                order.totalPrice += num
+            }
+            // 감소 액션 처리
+            cell.minusAction = {
+                self.decreaseQuantity(at: indexPath)
+                order.totalPrice -= num
+            }
 
         return cell
         }
