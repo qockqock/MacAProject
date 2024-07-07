@@ -153,8 +153,12 @@ class BasketViewController: UIViewController, UITableViewDataSource, UITableView
             // 예시로, 주문이 추가될 때마다 테이블 뷰를 다시 로드하는 코드를 추가할 수 있습니다.
             tableView.reloadData()
         }
-    
-    
+    func dismissBasket() {
+            dismiss(animated: true) {
+            NotificationCenter.default.post(name: NSNotification.Name("BasketDismissed"), object: nil)
+            }
+        }
+
     // 테이블뷰의 섹션당 셀의 개수 설정
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return basket.items.count

@@ -63,8 +63,32 @@ class SBMenuController: UIViewController {
         guard let priceNumber = Int(price) else { return price }
         return priceNumber.numberFormat()
     }
-}
+    func showToast() {
+          let toastLabel = UILabel()
+          toastLabel.backgroundColor = UIColor.black.withAlphaComponent(0.7)
+          toastLabel.textColor = UIColor.white
+          toastLabel.font = UIFont.systemFont(ofSize: 17.0)
+          toastLabel.textAlignment = .center
+          toastLabel.text = "장바구니에 메뉴를 추가했습니다"
+          toastLabel.alpha = 1.0
+          toastLabel.layer.cornerRadius = 7
+          toastLabel.clipsToBounds  =  true
 
+          self.view.addSubview(toastLabel)
+          
+          UIView.animate(withDuration: 0.9, delay: 0.6, options: .curveEaseOut, animations: {
+              toastLabel.alpha = 0.0
+          }, completion: {(isCompleted) in
+              toastLabel.removeFromSuperview()
+          })
+          
+          toastLabel.snp.makeConstraints {
+              $0.center.equalToSuperview()
+              $0.width.equalTo(280)
+              $0.height.equalTo(50)
+          }
+      }
+}
 extension SBMenuController: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return menus[currentCategoryIndex].count
@@ -95,6 +119,7 @@ extension SBMenuController: UICollectionViewDataSource, UICollectionViewDelegate
 //        orderVC.addOrder(imageName: menuItem.imageName, menuName: menuItem.menuName, menuPrice: menuItem.menuPrice)
         let menuItem = menus[currentCategoryIndex][indexPath.item]
         Basket.stc.addItem(menuItem)
+        showToast()
     }
 }
 
