@@ -25,6 +25,9 @@ class OrderMakeCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         addSubViews()
         setupConstraints()
+        addButton.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
+        subtractButton.addTarget(self, action: #selector(minusButtonTapped), for: .touchUpInside)
+        
     }
     
     @objc func addButtonTapped() {
@@ -34,8 +37,7 @@ class OrderMakeCell: UITableViewCell {
     @objc func minusButtonTapped() {
         minusAction?()
     }
-    
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -44,8 +46,6 @@ class OrderMakeCell: UITableViewCell {
         [productImageView, productNameLabel, quantityLabel, addButton, subtractButton, priceLabel, deleteButton].forEach{
             contentView.addSubview($0)
         }
-//        addButton.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
-//        subtractButton.addTarget(self, action: #selector(minusButtonTapped), for: .touchUpInside)
         
         productImageView.contentMode = .scaleAspectFit
         productNameLabel.font = .boldSystemFont(ofSize: 16)
@@ -72,6 +72,7 @@ class OrderMakeCell: UITableViewCell {
         deleteButton.titleLabel?.font = .boldSystemFont(ofSize: 16)
     }
 
+            
     
     func setupConstraints() {
         productImageView.snp.makeConstraints {
