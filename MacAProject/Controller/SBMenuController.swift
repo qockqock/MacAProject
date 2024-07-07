@@ -13,7 +13,7 @@ import SwiftUI
 class SBMenuController: UIViewController {
     
     // 카테고리 메뉴 배열
-    var drinks: [[CoffeeList]] = [CoffeeList.recommended_Menu, CoffeeList.coffee_Menu, CoffeeList.dessert_Menu, CoffeeList.smoothie_Menu, CoffeeList.tea_Menu, CoffeeList.do_not_eat_Menu]
+    var drinks: [[CoffeeList]] = [CoffeeList.allArray, CoffeeList.recommended_Menu, CoffeeList.coffee_Menu, CoffeeList.beverage_Menu, CoffeeList.dessert_Menu, CoffeeList.do_not_eat_Menu]
     
     var currentCategoryIndex: Int = 0
     

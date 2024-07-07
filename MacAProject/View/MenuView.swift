@@ -59,7 +59,7 @@ class KHMenuView: UIView {
     }()
     
     // 카테고리 종류 생성
-    let categories = ["추천메뉴", "커피", "디저트", "스무디", "티", "왜먹어?"]
+    let categories = ["전체", "추천메뉴", "커피", "음료", "디저트", "왜먹어?"]
     
     weak var delegate: KHMenuViewDelegate?
     
@@ -121,8 +121,9 @@ class KHMenuView: UIView {
         
         // 컬렉션뷰(메뉴 리스트) Constraints
         collectionView.snp.makeConstraints {
-            $0.top.equalTo(segmentControl.snp.bottom).offset(30)
-            $0.leading.trailing.bottom.equalToSuperview().inset(UIEdgeInsets(top: 0, left: 20, bottom: 30, right: 20))
+            $0.top.equalTo(segmentControl.snp.bottom).offset(20)
+            $0.leading.trailing.equalToSuperview().inset(UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20))
+            $0.height.equalTo(500)
         }
         
         // orderView Constraints - 마지막에 추가

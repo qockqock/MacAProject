@@ -11,7 +11,7 @@ class CategoryView: UIView {
     
     weak var delegate: CoffeeListViewDelegate?
     
-    private let categories = ["추천메뉴", "커피", "디저트", "스무디", "티", "왜먹어?"]
+    private let categories = ["전체", "추천메뉴", "커피", "음료", "디저트", "왜먹어?"]
     
     // 컬렉션 뷰 데이터를 담을 배열
     var drinks: [[CoffeeList]] = []
