@@ -26,15 +26,6 @@ extension CoffeeList{
         CoffeeList(imageName: "potato_Bread", menuName: "감자빵", menuPrice: "4200")
     ]
     
-    //    static let smoothie_Menu = [
-    //        CoffeeList(imageName: "golden_Mango_Smoothie", menuName: "골드망고 스무디", menuPrice: "5800"),
-    //        CoffeeList(imageName: "strawberry_Yogurt_Smoothie", menuName: "딸기요거트 스무디", menuPrice: "5500"),
-    //        CoffeeList(imageName: "strawberry_Cookie_Frappe", menuName: "딸기쿠키 프라페", menuPrice: "5700"),
-    //        CoffeeList(imageName: "cookie_Frappe", menuName: "쿠키프라페", menuPrice: "5600"),
-    //        CoffeeList(imageName: "coconut_Coffee_Smoothie", menuName: "코코넛커피 스무디", menuPrice: "5900"),
-    //        CoffeeList(imageName: "mint_Frappe", menuName: "민트프라페", menuPrice: "5400")
-    //    ]
-    
     static let coffee_Menu = [
         CoffeeList(imageName: "iced_Americano", menuName: "아이스 아메리카노", menuPrice: "4000"),
         CoffeeList(imageName: "mega_Americano", menuName: "메가리카노", menuPrice: "5000"),
@@ -88,23 +79,6 @@ extension CoffeeList{
         CoffeeList(imageName: "grapefruit_honey_bt_Iced", menuName: "아이스 허니자몽블랙티", menuPrice: "4900"),
         CoffeeList(imageName: "ggultip_Option", menuName: "꿀팁옵션 (타버린사이다)", menuPrice: "3800")
     ]
-    
-//    static let tea_Menu = [
-//        CoffeeList(imageName: "chamomile_Tea", menuName: "캐모마일티", menuPrice: "5000"),
-//        CoffeeList(imageName: "citron_Tea", menuName: "유자차", menuPrice: "5500"),
-//        CoffeeList(imageName: "earlGrey_Tea", menuName: "얼그레이티", menuPrice: "5500"),
-//        CoffeeList(imageName: "green_Tea", menuName: "녹차", menuPrice: "4800"),
-//        CoffeeList(imageName: "honey_Grapefruit_BlackTea", menuName: "허니자몽블랙티", menuPrice: "4900"),
-//        CoffeeList(imageName: "royal_Milk_Tea", menuName: "로얄밀크티", menuPrice: "5000")
-//    ]
-    
-    //  static let pong_crush_Menu = [
-    //    CoffeeList(imageName: "choco_Honey_PongCrush", menuName: "초코허니퐁크러쉬", menuPrice: 5300),
-    //    CoffeeList(imageName: "banana_PongCrush", menuName: "바나나퐁크러쉬", menuPrice: 5200),
-    //    CoffeeList(imageName: "strawberry_PongCrush", menuName: "딸기퐁크러쉬", menuPrice: 5400),
-    //    CoffeeList(imageName: "plain_PongCrush", menuName: "플레인퐁크러쉬", menuPrice: 4500),
-    //    CoffeeList(imageName: "custardCream_Honey_PongCrush", menuName: "슈크림허니퐁크러쉬", menuPrice: 5600)
-    //  ]
-    
+
 }
 

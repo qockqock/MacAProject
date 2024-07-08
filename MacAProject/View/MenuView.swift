@@ -178,7 +178,7 @@ class SBMenuCell: UICollectionViewCell {
         pl.backgroundColor = .white
         pl.textColor = .black
         pl.clipsToBounds = true
-//        pl.numberOfLines = 0
+        //        pl.numberOfLines = 0
         pl.font = UIFont.systemFont(ofSize: 14, weight: .bold)
         return pl
     }()

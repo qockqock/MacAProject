@@ -10,8 +10,10 @@ import SnapKit
 
 //MARK: - OrderSheetController 클래스: 주문 내역 버튼을 관리하는 클래스
 class OrderSheetController: UIViewController, BasketViewControllerDelegate {
+    
     weak var delegate: BasketViewControllerDelegate?
     //tvc 클래스 변수로 변환
+    
     private let basketViewController = BasketViewController()
     let orderListButton = UIButton()
     
@@ -71,33 +73,33 @@ class OrderSheetController: UIViewController, BasketViewControllerDelegate {
     @objc private func showOrderListModal() {
         self.delegate?.didUpdateBasket()
         let hasProducts = !basketViewController.orders.isEmpty
-           print(hasProducts ? "상품 있음." : "상품 없음.")
-
-           if let sheetViewController = basketViewController.sheetPresentationController {
-               sheetViewController.detents = [.medium()]
-               sheetViewController.preferredCornerRadius = 20
-           }
-           
-           present(basketViewController, animated: true, completion: nil)
-       }
+        print(hasProducts ? "상품 있음." : "상품 없음.")
+        
+        if let sheetViewController = basketViewController.sheetPresentationController {
+            sheetViewController.detents = [.medium()]
+            sheetViewController.preferredCornerRadius = 20
+        }
+        
+        present(basketViewController, animated: true, completion: nil)
+    }
     
     //버튼 숨기기 에니메이션
     @objc private func handleShowModalNotification(_ notification: Notification) {
-            if let showModal = notification.userInfo?["showModal"] as? Bool {
-                self.showModal = showModal
-                print("showModal: \(showModal)")
-            }
+        if let showModal = notification.userInfo?["showModal"] as? Bool {
+            self.showModal = showModal
+            print("showModal: \(showModal)")
+        }
         self.orderListButton.snp.updateConstraints {
             $0.centerX.equalToSuperview()
             $0.bottom.equalToSuperview().inset(-40) // 화면 바깥으로 이동
         }
         self.view.layoutIfNeeded()
         
-            UIView.animate(withDuration: 0.5) {
-                self.orderListButton.snp.updateConstraints {
-                    $0.bottom.equalToSuperview().inset(40)
-                }
-                self.view.layoutIfNeeded()
+        UIView.animate(withDuration: 0.5) {
+            self.orderListButton.snp.updateConstraints {
+                $0.bottom.equalToSuperview().inset(40)
             }
+            self.view.layoutIfNeeded()
         }
+    }
 }

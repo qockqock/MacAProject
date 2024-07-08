@@ -42,9 +42,9 @@ class BasketViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     override func viewWillAppear(_ animated: Bool) {
-           super.viewWillAppear(animated)
-           tableView.reloadData() // 화면이 나타날 때마다 데이터 갱신
-       }
+        super.viewWillAppear(animated)
+        tableView.reloadData() // 화면이 나타날 때마다 데이터 갱신
+    }
     
     //MARK: - 모달 내부에 있는 결제 Btn 함수
     func paymentButton_Modal() {
@@ -161,7 +161,7 @@ class BasketViewController: UIViewController, UITableViewDataSource, UITableView
         view.addSubview(tableView)
         
         tableView.snp.makeConstraints {
-//            $0.height.equalToSuperview()
+            //            $0.height.equalToSuperview()
             $0.height.equalTo(250)
             $0.top.equalToSuperview().inset(55)
             $0.leading.trailing.equalToSuperview()
@@ -173,7 +173,7 @@ class BasketViewController: UIViewController, UITableViewDataSource, UITableView
         let menuItem = CoffeeList(imageName: imageName, menuName: menuName, menuPrice: menuPrice)
         orders.append(menuItem)
         tableView.reloadData()
-
+        
         // 주문이 추가된 후, 필요한 UI 업데이트 등을 수행할 수 있습니다.
         print("Added Order: \(menuItem.menuName)")
     }
@@ -252,7 +252,7 @@ class BasketViewController: UIViewController, UITableViewDataSource, UITableView
         totalLabel.text = "\(totalPrice)원"
     }
     
-
+    
 }
 
 extension BasketViewController {

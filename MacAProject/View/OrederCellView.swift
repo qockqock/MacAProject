@@ -41,7 +41,7 @@ class OrderMakeCell: UITableViewCell {
     @objc func removeButtonTapped() {
         minusAction?()
     }
-
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -78,8 +78,8 @@ class OrderMakeCell: UITableViewCell {
         removeButton.backgroundColor = #colorLiteral(red: 0.8749070764, green: 0.8814653754, blue: 0.9251363873, alpha: 1)
         removeButton.titleLabel?.font = .boldSystemFont(ofSize: 16)
     }
-
-            
+    
+    
     
     func setupConstraints() {
         productImageView.snp.makeConstraints {

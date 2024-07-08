@@ -62,27 +62,8 @@ class CategoryView: UIView {
     // 뷰 설정 함수
     private func setupViews() {
         addSubview(logoImageView)
-//        addSubview(segmentControl)
-        
-        // 세그먼트 컨트롤 관련 카테고리
-//        drinks = [CoffeeList.recommended_Menu, CoffeeList.coffee_Menu, CoffeeList.dessert_Menu, CoffeeList.smoothie_Menu, CoffeeList.tea_Menu, CoffeeList.do_not_eat_Menu]
-        
-//        setupLayout()
+
     }
-    
-//    private func setupLayout() {
-//        logoImageView.snp.makeConstraints { make in
-//            make.top.equalTo(safeAreaLayoutGuide.snp.top).offset(20)
-//            make.centerX.equalToSuperview()
-//            make.width.equalTo(200)
-//            make.height.equalTo(100)
-//        }
-//        
-//        segmentControl.snp.makeConstraints { make in
-//            make.top.equalTo(logoImageView.snp.bottom).offset(20)
-//            make.left.right.equalToSuperview().inset(20)
-//        }
-//    }
     
     // 세그먼트 컨트롤 값 변경 시 호출되는 함수
     @objc private func segmentValueChanged(_ sender: UISegmentedControl) {

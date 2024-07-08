@@ -60,26 +60,4 @@ class ViewController: UIViewController {
         }
     }
 }
-//
-//struct PreView123: PreviewProvider {
-//    static var previews: some View {
-//        ViewController().toPreview123()
-//    }
-//}
-//
-//#if DEBUG
-//extension UIViewController {
-//    private struct Preview: UIViewControllerRepresentable {
-//        let viewController: UIViewController
-//        func makeUIViewController(context: Context) -> UIViewController {
-//            return viewController
-//        }
-//        func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
-//        }
-//    }
-//    func toPreview123() -> some View {
-//        Preview(viewController: self)
-//    }
-//}
-//#endif
 

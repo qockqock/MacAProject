@@ -42,7 +42,7 @@ class SBMenuController: UIViewController {
         
         khMenuView.segmentControl.addTarget(self, action: #selector(segmentValueChanged(_:)), for: .valueChanged)
     }
-
+    
     @objc func segmentValueChanged(_ sender: UISegmentedControl) {
         currentCategoryIndex = sender.selectedSegmentIndex
         khMenuView.collectionView.reloadData()
@@ -56,38 +56,34 @@ class SBMenuController: UIViewController {
     
     // priceLabel Text에 , 추가하는 메서드
     private func formatPrice(_ price: String) -> String? {
-//        guard let priceNumber = Double(price) else { return price }
-//        let numberFormatter = NumberFormatter()
-//        numberFormatter.numberStyle = .decimal
-//        return numberFormatter.string(from: NSNumber(value: priceNumber))
         guard let priceNumber = Int(price) else { return price }
         return priceNumber.numberFormat()
     }
     func showToast() {
-          let toastLabel = UILabel()
-          toastLabel.backgroundColor = UIColor.black.withAlphaComponent(0.7)
-          toastLabel.textColor = UIColor.white
-          toastLabel.font = UIFont.systemFont(ofSize: 17.0)
-          toastLabel.textAlignment = .center
-          toastLabel.text = "장바구니에 메뉴를 추가했습니다"
-          toastLabel.alpha = 1.0
-          toastLabel.layer.cornerRadius = 7
-          toastLabel.clipsToBounds  =  true
-
-          self.view.addSubview(toastLabel)
-          
-          UIView.animate(withDuration: 0.9, delay: 0.6, options: .curveEaseOut, animations: {
-              toastLabel.alpha = 0.0
-          }, completion: {(isCompleted) in
-              toastLabel.removeFromSuperview()
-          })
-          
-          toastLabel.snp.makeConstraints {
-              $0.center.equalToSuperview()
-              $0.width.equalTo(280)
-              $0.height.equalTo(50)
-          }
-      }
+        let toastLabel = UILabel()
+        toastLabel.backgroundColor = UIColor.black.withAlphaComponent(0.7)
+        toastLabel.textColor = UIColor.white
+        toastLabel.font = UIFont.systemFont(ofSize: 17.0)
+        toastLabel.textAlignment = .center
+        toastLabel.text = "장바구니에 메뉴를 추가했습니다"
+        toastLabel.alpha = 1.0
+        toastLabel.layer.cornerRadius = 7
+        toastLabel.clipsToBounds  =  true
+        
+        self.view.addSubview(toastLabel)
+        
+        UIView.animate(withDuration: 0.9, delay: 0.6, options: .curveEaseOut, animations: {
+            toastLabel.alpha = 0.0
+        }, completion: {(isCompleted) in
+            toastLabel.removeFromSuperview()
+        })
+        
+        toastLabel.snp.makeConstraints {
+            $0.center.equalToSuperview()
+            $0.width.equalTo(280)
+            $0.height.equalTo(50)
+        }
+    }
 }
 extension SBMenuController: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -100,12 +96,6 @@ extension SBMenuController: UICollectionViewDataSource, UICollectionViewDelegate
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "img", for: indexPath) as! SBMenuCell
-        
-//        // 0인지 확인 (예외처리) - 대성
-//        guard menus[currentCategoryIndex].indices.contains(indexPath.item) else {
-//            return cell// 아무것도 하지 않음
-//        }
-        
         let menuItem = menus[currentCategoryIndex][indexPath.item]
         cell.imgView.image = UIImage(named: menuItem.imageName)
         cell.beverageLabel.text = menuItem.menuName.replacingOccurrences(of: " ", with: "\n")
