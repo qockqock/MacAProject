@@ -47,9 +47,18 @@ class Basket{
     }
     
     // 계산로직
-    func calculateTotalPrice() -> Int {
-        return items.reduce(0) { (result, item) -> Int in
+    func calculateTotalPrice() -> String {
+        let totalPrice = items.reduce(0) { (result, item) -> Int in
             return result + (item.numbers * (Int(item.coffee.menuPrice) ?? 0))
+        }
+
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+
+        if let formattedTotal = formatter.string(from: NSNumber(value: totalPrice)) {
+            return formattedTotal
+        } else {
+            return "\(totalPrice)"  // 포맷 실패 시 일반 문자열로 반환
         }
     }
 }

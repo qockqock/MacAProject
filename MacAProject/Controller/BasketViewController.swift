@@ -17,6 +17,9 @@ class BasketViewController: UIViewController, UITableViewDataSource, UITableView
     // 바스켓 -> 대성 추가
     let basket = Basket.stc
     
+    var basketItem: BasketItem!
+    
+    var totalLabel = UILabel()
     // 얼럿 관련
     var showModal = false
     
@@ -35,8 +38,7 @@ class BasketViewController: UIViewController, UITableViewDataSource, UITableView
         
         setupTableviewConstraints()
         paymentButton_Modal()
-     
-        print("\(orders.count)")
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -49,7 +51,7 @@ class BasketViewController: UIViewController, UITableViewDataSource, UITableView
         let orderListLabel = UILabel()
         let sum = Basket.stc.calculateTotalPrice()
         let totalPriceLabel = UILabel()
-        var totalPriceNumLabel = UILabel()
+        var totalPriceNumLabel = totalLabel
         let paymentButton = UIButton()
         let deleteAllButton = UIButton()
         
@@ -58,12 +60,11 @@ class BasketViewController: UIViewController, UITableViewDataSource, UITableView
         orderListLabel.text = "주문 상품"
         orderListLabel.textColor = .black
         orderListLabel.font = UIFont.boldSystemFont(ofSize: 20)
-        
         //총 상품 금액 라벨
         totalPriceLabel.text = "총 상품금액"
         totalPriceLabel.font = .systemFont(ofSize: 16)
         
-        totalPriceNumLabel.text = "\(sum)"
+        totalPriceNumLabel.text = "\(sum)원"
         totalPriceNumLabel.font = .boldSystemFont(ofSize: 20)
         totalPriceNumLabel.textColor = .red
         
@@ -139,8 +140,6 @@ class BasketViewController: UIViewController, UITableViewDataSource, UITableView
         
         //alert창 띄우기
         self.present(alert, animated: true, completion: nil)
-        
-        delegate?.didUpdateBasket()
     }
     
     @objc
@@ -155,16 +154,14 @@ class BasketViewController: UIViewController, UITableViewDataSource, UITableView
         paymentSuccessAlert()
     }
     
-//    @objc
-//    func paymentButtonTapped() {
-//        paymentSuccessAlert()
-//    }
+    
     // 테이블뷰 오토레이아웃 설정
     func setupTableviewConstraints() {
         view.addSubview(tableView)
         
         tableView.snp.makeConstraints {
-            $0.height.equalToSuperview()
+//            $0.height.equalToSuperview()
+            $0.height.equalTo(200)
             $0.top.equalToSuperview().inset(55)
             $0.leading.trailing.equalToSuperview()
         }
@@ -212,15 +209,16 @@ class BasketViewController: UIViewController, UITableViewDataSource, UITableView
         
             cell.plusAction = {
                 self.increaseQuantity(at: indexPath)
+                self.updateTotalPriceLabel()
             }
             // 감소 액션 처리
             cell.minusAction = {
                 self.decreaseQuantity(at: indexPath)
-            }
+                self.updateTotalPriceLabel()
 
+            }
         return cell
         }
-
         func increaseQuantity(at indexPath: IndexPath) {
             let coffeeItem = basket.items[indexPath.row].coffee
             Basket.stc.addItem(coffeeItem)
@@ -234,6 +232,11 @@ class BasketViewController: UIViewController, UITableViewDataSource, UITableView
             tableView.reloadData()
             delegate?.didUpdateBasket()
         }
+    func updateTotalPriceLabel() {
+        let totalPrice = Basket.stc.calculateTotalPrice()
+        totalLabel.text = "\(totalPrice)원"
+    }
+    
 
 }
 
