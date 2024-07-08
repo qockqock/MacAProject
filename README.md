@@ -9,9 +9,17 @@
 ### 프로젝트 소개
 기본 기능에 충실한 앱 :)
 
-![스크린샷 2024-07-08 오후 12 42 51](https://github.com/qockqock/MacAProject/assets/101637371/b3ae7dc3-bbf1-49d1-9019-cb6de472d6f5)
-![스크린샷 2024-07-08 오후 12 43 06](https://github.com/qockqock/MacAProject/assets/101637371/c2dab953-7042-4df4-9bf8-2d908e3355d4)
-![스크린샷 2024-07-08 오후 12 43 23](https://github.com/qockqock/MacAProject/assets/101637371/55c36763-682c-4c9b-aabc-12253ab6b419)
+![스크린샷 2024-07-08 오후 12 42 51](https://github.com/qockqock/MacAProject/assets/101637371/9a9b4d1d-eabf-4cdd-8edb-73a3990f27a8)
+
+<div align="center">
+  <img src="https://github.com/qockqock/MacAProject/assets/101637371/8d4a97e0-5e1e-40c9-9ddb-8f1231edf3d4" alt="Simulator Screen Recording 1" width="300" style="margin: 10px;"></img>
+  <img src="https://github.com/qockqock/MacAProject/assets/101637371/a8f7455b-3f09-4060-a6b7-4f3c296f650a" alt="Simulator Screen Recording 2" width="300" style="margin: 10px;"></img>
+  <img src="https://github.com/qockqock/MacAProject/assets/101637371/50687de2-e7ac-492c-ba1b-32e57a4507e1" alt="Simulator Screen Recording 2" width="300" style="margin: 10px;"></img> 
+</div>
+
+![스크린샷 2024-07-08 오후 12 43 06](https://github.com/qockqock/MacAProject/assets/101637371/a7f32618-2524-4fa0-8497-42d0045db880)
+![스크린샷 2024-07-08 오후 12 43 23](https://github.com/qockqock/MacAProject/assets/101637371/0a20c52d-e8ca-423e-b9ba-b25e64156182)
+
 
 - MacA Coffee 구현 기능
     - [ ]  메인 화면
