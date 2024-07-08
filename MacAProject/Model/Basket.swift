@@ -28,8 +28,8 @@ class Basket{
         }
     }
     
-    // 삭제
-    func removeItem(_ coffee: CoffeeList) {
+    // 지우기
+    func deleteItem(_ coffee: CoffeeList) {
         if let index = items.firstIndex(where: { $0.coffee.menuName == coffee.menuName }) {
             items[index].numbers -= 1
             if items[index].numbers == 0 {
@@ -41,7 +41,13 @@ class Basket{
         }
     }
     
-    // 초기화
+    // 삭제
+    func removeItem(_ coffee: CoffeeList){
+        if let index = items.firstIndex(where: { $0.coffee.menuName == coffee.menuName }) {
+            items.remove(at: index)
+        }
+    }
+    
     func clearAll() {
         items.removeAll()
     }

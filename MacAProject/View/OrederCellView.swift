@@ -16,18 +16,18 @@ class OrderMakeCell: UITableViewCell {
     let priceLabel = UILabel()
     let addButton = UIButton(type: .system)
     let subtractButton = UIButton(type: .system)
-    let deleteButton = UIButton(type: .system)
+    let removeButton = UIButton(type: .system)
     
     var plusAction: (() -> Void)?
     var minusAction: (() -> Void)?
-    
+    var removeAction: (() -> Void)?
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         addSubViews()
         setupConstraints()
         addButton.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
         subtractButton.addTarget(self, action: #selector(minusButtonTapped), for: .touchUpInside)
-        
+        removeButton.addTarget(self, action: #selector(minusButtonTapped), for: .touchUpInside)
     }
     
     @objc func addButtonTapped() {
@@ -37,13 +37,17 @@ class OrderMakeCell: UITableViewCell {
     @objc func minusButtonTapped() {
         minusAction?()
     }
+    
+    @objc func removeButtonTapped() {
+        minusAction?()
+    }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     func addSubViews() {
-        [productImageView, productNameLabel, quantityLabel, addButton, subtractButton, priceLabel, deleteButton].forEach{
+        [productImageView, productNameLabel, quantityLabel, addButton, subtractButton, priceLabel, removeButton].forEach{
             contentView.addSubview($0)
         }
         
@@ -68,11 +72,11 @@ class OrderMakeCell: UITableViewCell {
         subtractButton.backgroundColor = .black
         subtractButton.titleLabel?.font = .boldSystemFont(ofSize: 16)
         
-        deleteButton.setTitle("×", for: .normal)
-        deleteButton.layer.cornerRadius = 2
-        deleteButton.setTitleColor(.systemPink, for: .normal)
-        deleteButton.backgroundColor = #colorLiteral(red: 0.8749070764, green: 0.8814653754, blue: 0.9251363873, alpha: 1)
-        deleteButton.titleLabel?.font = .boldSystemFont(ofSize: 16)
+        removeButton.setTitle("×", for: .normal)
+        removeButton.layer.cornerRadius = 2
+        removeButton.setTitleColor(.systemPink, for: .normal)
+        removeButton.backgroundColor = #colorLiteral(red: 0.8749070764, green: 0.8814653754, blue: 0.9251363873, alpha: 1)
+        removeButton.titleLabel?.font = .boldSystemFont(ofSize: 16)
     }
 
             
@@ -114,7 +118,7 @@ class OrderMakeCell: UITableViewCell {
             $0.width.equalTo(80)
         }
         
-        deleteButton.snp.makeConstraints {
+        removeButton.snp.makeConstraints {
             $0.trailing.equalToSuperview().inset(25)
             $0.top.equalToSuperview().inset(15)
             $0.width.height.equalTo(18)

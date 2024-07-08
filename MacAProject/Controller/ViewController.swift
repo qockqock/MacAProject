@@ -56,7 +56,7 @@ class ViewController: UIViewController {
         // orderController 제약 조건 설정
         orderController.view.snp.makeConstraints { make in
             make.leading.trailing.bottom.equalToSuperview()
-            make.height.equalTo(200) // 원하는 높이 설정
+            make.height.equalTo(250) // 원하는 높이 설정
         }
     }
 }

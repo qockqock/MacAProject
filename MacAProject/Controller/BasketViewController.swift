@@ -60,6 +60,7 @@ class BasketViewController: UIViewController, UITableViewDataSource, UITableView
         orderListLabel.text = "주문 상품"
         orderListLabel.textColor = .black
         orderListLabel.font = UIFont.boldSystemFont(ofSize: 20)
+        
         //총 상품 금액 라벨
         totalPriceLabel.text = "총 상품금액"
         totalPriceLabel.font = .systemFont(ofSize: 16)
@@ -161,7 +162,7 @@ class BasketViewController: UIViewController, UITableViewDataSource, UITableView
         
         tableView.snp.makeConstraints {
 //            $0.height.equalToSuperview()
-            $0.height.equalTo(200)
+            $0.height.equalTo(250)
             $0.top.equalToSuperview().inset(55)
             $0.leading.trailing.equalToSuperview()
         }
@@ -206,32 +207,46 @@ class BasketViewController: UIViewController, UITableViewDataSource, UITableView
             cell.priceLabel.text = "\(priceTotal)원"
             
         }
+        // 덧셈 액션 처리
+        cell.plusAction = {
+            self.increaseQuantity(at: indexPath)
+            self.updateTotalPriceLabel()
+        }
+        // 감소 액션 처리
+        cell.minusAction = {
+            self.decreaseQuantity(at: indexPath)
+            self.updateTotalPriceLabel()
+        }
+        // 셀 지우기 액션 처리
+        cell.removeAction = {
+            self.removeQuantity(at: indexPath)
+            self.updateTotalPriceLabel()
+        }
         
-            cell.plusAction = {
-                self.increaseQuantity(at: indexPath)
-                self.updateTotalPriceLabel()
-            }
-            // 감소 액션 처리
-            cell.minusAction = {
-                self.decreaseQuantity(at: indexPath)
-                self.updateTotalPriceLabel()
-
-            }
         return cell
-        }
-        func increaseQuantity(at indexPath: IndexPath) {
-            let coffeeItem = basket.items[indexPath.row].coffee
-            Basket.stc.addItem(coffeeItem)
-            tableView.reloadData()
-            delegate?.didUpdateBasket()
-        }
-
-        func decreaseQuantity(at indexPath: IndexPath) {
-            let coffeeItem = basket.items[indexPath.row].coffee
-            Basket.stc.removeItem(coffeeItem)
-            tableView.reloadData()
-            delegate?.didUpdateBasket()
-        }
+        
+    }
+    func increaseQuantity(at indexPath: IndexPath) {
+        let coffeeItem = basket.items[indexPath.row].coffee
+        Basket.stc.addItem(coffeeItem)
+        tableView.reloadData()
+        delegate?.didUpdateBasket()
+    }
+    
+    func decreaseQuantity(at indexPath: IndexPath) {
+        let coffeeItem = basket.items[indexPath.row].coffee
+        Basket.stc.deleteItem(coffeeItem)
+        tableView.reloadData()
+        delegate?.didUpdateBasket()
+    }
+    
+    func removeQuantity(at indexPath: IndexPath) {
+        let coffeeItem = basket.items[indexPath.row].coffee
+        Basket.stc.deleteItem(coffeeItem)
+        tableView.reloadData()
+        delegate?.didUpdateBasket()
+    }
+    
     func updateTotalPriceLabel() {
         let totalPrice = Basket.stc.calculateTotalPrice()
         totalLabel.text = "\(totalPrice)원"
