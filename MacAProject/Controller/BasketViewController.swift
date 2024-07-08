@@ -154,7 +154,8 @@ class BasketViewController: UIViewController, UITableViewDataSource, UITableView
         view.addSubview(tableView)
         
         tableView.snp.makeConstraints {
-            $0.height.equalToSuperview()
+//            $0.height.equalToSuperview()
+            $0.height.equalTo(200)
             $0.top.equalToSuperview().inset(55)
             $0.leading.trailing.equalToSuperview()
         }
