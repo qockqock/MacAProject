@@ -9,10 +9,10 @@ import UIKit
 import SnapKit
 
 //MARK: - OrderSheetController 클래스: 주문 내역 버튼을 관리하는 클래스
-class OrderSheetController: UIViewController {
+class OrderSheetController: UIViewController, BasketViewControllerDelegate {
+    weak var delegate: BasketViewControllerDelegate?
     //tvc 클래스 변수로 변환
     private let basketViewController = BasketViewController()
-    let tvc = BasketViewController()
     let orderListButton = UIButton()
     
     var showModal = false
@@ -23,10 +23,18 @@ class OrderSheetController: UIViewController {
         
         paymentButton_Home()
         addNotiObserver()
+        
+        basketViewController.delegate = self
+    }
+    
+    func didUpdateBasket() {
+        basketViewController.reloadData()
     }
     
     // 홈에 있는 주문상품 버튼
     func paymentButton_Home() {
+        self.delegate?.didUpdateBasket()
+        
         print("called - PaymentButton")
         // 버튼의 타이틀, 색상, 배경색, 폰트 설정
         orderListButton.setTitle("주문 상품", for: .normal)
@@ -50,7 +58,7 @@ class OrderSheetController: UIViewController {
     
     // 대성 추가
     @objc func showBasket() {
-        present(tvc, animated: true, completion: nil)
+        present(basketViewController, animated: true, completion: nil)
     }
     
     // 알림 옵저버 추가
@@ -61,9 +69,10 @@ class OrderSheetController: UIViewController {
     
     // 모달 창 띄우기
     @objc private func showOrderListModal() {
+        self.delegate?.didUpdateBasket()
         let hasProducts = !basketViewController.orders.isEmpty
            print(hasProducts ? "상품 있음." : "상품 없음.")
-           
+
            if let sheetViewController = basketViewController.sheetPresentationController {
                sheetViewController.detents = [.medium()]
                sheetViewController.preferredCornerRadius = 20
