@@ -14,6 +14,7 @@ class ViewController: UIViewController {
         let animationView: LottieAnimationView = .init(name: "coffee")
         animationView.frame = self.view.bounds  //전체화면
         animationView.contentMode = .scaleAspectFit  //화면에 가득 차게
+        animationView.animationSpeed = 2
         
         self.view.addSubview(animationView)
         
@@ -55,30 +56,8 @@ class ViewController: UIViewController {
         // orderController 제약 조건 설정
         orderController.view.snp.makeConstraints { make in
             make.leading.trailing.bottom.equalToSuperview()
-            make.height.equalTo(200) // 원하는 높이 설정
+            make.height.equalTo(250) // 원하는 높이 설정
         }
     }
 }
-//
-//struct PreView123: PreviewProvider {
-//    static var previews: some View {
-//        ViewController().toPreview123()
-//    }
-//}
-//
-//#if DEBUG
-//extension UIViewController {
-//    private struct Preview: UIViewControllerRepresentable {
-//        let viewController: UIViewController
-//        func makeUIViewController(context: Context) -> UIViewController {
-//            return viewController
-//        }
-//        func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
-//        }
-//    }
-//    func toPreview123() -> some View {
-//        Preview(viewController: self)
-//    }
-//}
-//#endif
 

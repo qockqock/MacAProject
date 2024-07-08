@@ -9,10 +9,12 @@ import UIKit
 import SnapKit
 
 //MARK: - OrderSheetController 클래스: 주문 내역 버튼을 관리하는 클래스
-class OrderSheetController: UIViewController {
-    //tvc 클래스 변수로 변환
-    let tvc = TableViewController()
+class OrderSheetController: UIViewController, BasketViewControllerDelegate {
     
+    weak var delegate: BasketViewControllerDelegate?
+    //tvc 클래스 변수로 변환
+    
+    private let basketViewController = BasketViewController()
     let orderListButton = UIButton()
     
     var showModal = false
@@ -23,10 +25,17 @@ class OrderSheetController: UIViewController {
         
         paymentButton_Home()
         addNotiObserver()
+        
+        basketViewController.delegate = self
     }
     
-    // 홈에 있는 주문하기 버튼
+    func didUpdateBasket() {
+        basketViewController.reloadData()
+    }
+    
+    // 홈에 있는 주문상품 버튼
     func paymentButton_Home() {
+        self.delegate?.didUpdateBasket()
         
         print("called - PaymentButton")
         // 버튼의 타이틀, 색상, 배경색, 폰트 설정
@@ -49,36 +58,48 @@ class OrderSheetController: UIViewController {
         orderListButton.addTarget(self, action: #selector(showOrderListModal), for: .touchDown)
     }
     
+    // 대성 추가
+    @objc func showBasket() {
+        present(basketViewController, animated: true, completion: nil)
+    }
+    
     // 알림 옵저버 추가
     func addNotiObserver() {
-        NotificationCenter.default.addObserver(self, selector: #selector(self.didReceiveNoti(_:)), name: NSNotification.Name("notiData"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleShowModalNotification(_:)), name: NSNotification.Name("notiData"), object: nil)
     }
     
-    // 알림을 받았을 때 호출되는 메서드
-    @objc
-    func didReceiveNoti(_ notification: Notification) {
-        if let showModal = notification.userInfo?["showModal"] as? Bool {
-            self.showModal = showModal
-        }
-    }
     
     // 모달 창 띄우기
-    @objc
-    func showOrderListModal() {
+    @objc private func showOrderListModal() {
+        self.delegate?.didUpdateBasket()
+        let hasProducts = !basketViewController.orders.isEmpty
+        print(hasProducts ? "상품 있음." : "상품 없음.")
         
-        if tvc.orders.isEmpty {
-            print("아직 선택된 상품 없음.")
-            if let sheetViewController = tvc.sheetPresentationController {
-                sheetViewController.detents = [.medium()]
-                sheetViewController.preferredCornerRadius = 20
+        if let sheetViewController = basketViewController.sheetPresentationController {
+            sheetViewController.detents = [.medium()]
+            sheetViewController.preferredCornerRadius = 20
+        }
+        
+        present(basketViewController, animated: true, completion: nil)
+    }
+    
+    //버튼 숨기기 에니메이션
+    @objc private func handleShowModalNotification(_ notification: Notification) {
+        if let showModal = notification.userInfo?["showModal"] as? Bool {
+            self.showModal = showModal
+            print("showModal: \(showModal)")
+        }
+        self.orderListButton.snp.updateConstraints {
+            $0.centerX.equalToSuperview()
+            $0.bottom.equalToSuperview().inset(-40) // 화면 바깥으로 이동
+        }
+        self.view.layoutIfNeeded()
+        
+        UIView.animate(withDuration: 0.5) {
+            self.orderListButton.snp.updateConstraints {
+                $0.bottom.equalToSuperview().inset(40)
             }
-            self.present(tvc, animated: true, completion: nil)
-        } else {
-            if let sheetViewController = tvc.sheetPresentationController {
-                sheetViewController.detents = [.medium()]
-                sheetViewController.preferredCornerRadius = 20
-            }
-            self.present(tvc, animated: true, completion: nil)
+            self.view.layoutIfNeeded()
         }
     }
 }

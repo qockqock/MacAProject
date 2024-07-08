@@ -8,13 +8,20 @@
 
 import UIKit
 import SnapKit
-import SwiftUI
 
 class SBMenuController: UIViewController {
     
     // 카테고리 메뉴 배열
-    var drinks: [[CoffeeList]] = [CoffeeList.recommended_Menu, CoffeeList.coffee_Menu, CoffeeList.dessert_Menu, CoffeeList.smoothie_Menu, CoffeeList.tea_Menu, CoffeeList.do_not_eat_Menu]
+    var menus: [[CoffeeList]] = [
+        CoffeeList.allArray,
+        CoffeeList.recommended_Menu,
+        CoffeeList.coffee_Menu,
+        CoffeeList.beverage_Menu,
+        CoffeeList.dessert_Menu,
+        CoffeeList.do_not_eat_Menu
+    ]
     
+    // 현재 선택된 카테고리 인덱스
     var currentCategoryIndex: Int = 0
     
     // khMenuView = 로고, 카테고리 관련
@@ -31,9 +38,11 @@ class SBMenuController: UIViewController {
         
         khMenuView.collectionView.dataSource = self
         khMenuView.collectionView.delegate = self
+        khMenuView.collectionView.register(SBMenuCell.self, forCellWithReuseIdentifier: "img")
         
         khMenuView.segmentControl.addTarget(self, action: #selector(segmentValueChanged(_:)), for: .valueChanged)
     }
+    
     @objc func segmentValueChanged(_ sender: UISegmentedControl) {
         currentCategoryIndex = sender.selectedSegmentIndex
         khMenuView.collectionView.reloadData()
@@ -42,33 +51,52 @@ class SBMenuController: UIViewController {
     
     // 밑줄 이동 메서드
     private func moveUnderline(to index: Int) {
-        let segmentWidth = khMenuView.segmentControl.frame.width / CGFloat(khMenuView.segmentControl.numberOfSegments)
-        let leadingConstraint = segmentWidth * CGFloat(index) + 10 // 10은 여유로운 여백
-        UIView.animate(withDuration: 0.3) {
-            self.khMenuView.underlineView.snp.updateConstraints {
-                $0.leading.equalToSuperview().offset(leadingConstraint)
-            }
-            self.view.layoutIfNeeded()
-        }
+        khMenuView.moveUnderline(to: index)
     }
     
     // priceLabel Text에 , 추가하는 메서드
     private func formatPrice(_ price: String) -> String? {
-        guard let priceNumber = Double(price) else { return price }
-        let numberFormatter = NumberFormatter()
-        numberFormatter.numberStyle = .decimal
-        return numberFormatter.string(from: NSNumber(value: priceNumber))
+        guard let priceNumber = Int(price) else { return price }
+        return priceNumber.numberFormat()
+    }
+    func showToast() {
+        let toastLabel = UILabel()
+        toastLabel.backgroundColor = UIColor.black.withAlphaComponent(0.7)
+        toastLabel.textColor = UIColor.white
+        toastLabel.font = UIFont.systemFont(ofSize: 17.0)
+        toastLabel.textAlignment = .center
+        toastLabel.text = "장바구니에 메뉴를 추가했습니다"
+        toastLabel.alpha = 1.0
+        toastLabel.layer.cornerRadius = 7
+        toastLabel.clipsToBounds  =  true
+        
+        self.view.addSubview(toastLabel)
+        
+        UIView.animate(withDuration: 0.9, delay: 0.6, options: .curveEaseOut, animations: {
+            toastLabel.alpha = 0.0
+        }, completion: {(isCompleted) in
+            toastLabel.removeFromSuperview()
+        })
+        
+        toastLabel.snp.makeConstraints {
+            $0.center.equalToSuperview()
+            $0.width.equalTo(280)
+            $0.height.equalTo(50)
+        }
     }
 }
-
 extension SBMenuController: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return drinks[currentCategoryIndex].count
+        let itemCount = menus[currentCategoryIndex].count
+        
+        // 0인지 확인 (예외처리) - 대성
+        khMenuView.updateEmptyState(isEmpty: itemCount == 0)
+        return itemCount
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "img", for: indexPath) as! SBMenuCell
-        let menuItem = drinks[currentCategoryIndex][indexPath.item]
+        let menuItem = menus[currentCategoryIndex][indexPath.item]
         cell.imgView.image = UIImage(named: menuItem.imageName)
         cell.beverageLabel.text = menuItem.menuName.replacingOccurrences(of: " ", with: "\n")
         //        cell.beverageLabel.text = "\(menuItem.menuName)"
@@ -82,14 +110,13 @@ extension SBMenuController: UICollectionViewDataSource, UICollectionViewDelegate
         }
         return cell
     }
-    //cell이 클릭 됬을때 동작함
+    
+    // cell이 클릭 됐을때 동작함
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let menuItem = drinks[currentCategoryIndex][indexPath.item]
-        let orderVC = TableViewController()
-        orderVC.menuItem = menuItem
-        orderVC.addOrder(imageName: menuItem.imageName, menuName: menuItem.menuName, menuPrice: menuItem.menuPrice)
+        let menuItem = menus[currentCategoryIndex][indexPath.item]
+        Basket.stc.addItem(menuItem)
+        showToast()
     }
-   
 }
 
 extension SBMenuController: UICollectionViewDelegateFlowLayout {
@@ -108,3 +135,4 @@ extension SBMenuController: UICollectionViewDelegateFlowLayout {
         return 0
     }
 }
+

@@ -16,3 +16,9 @@ protocol KHMenuViewDelegate: AnyObject {
 protocol SBMenuCollectionViewCellDelegate: AnyObject {
     func didSelectCountButton(CoffeeList: CoffeeList)
 }
+
+// reloadData 관련
+protocol BasketViewControllerDelegate: AnyObject {
+    func didUpdateBasket()
+}
+

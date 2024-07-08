@@ -22,6 +22,7 @@ class KHMenuView: UIView {
     lazy var segmentControl: UISegmentedControl = {
         let control = UISegmentedControl(items: categories)
         control.selectedSegmentIndex = 0
+        
         control.backgroundColor = .white
         control.tintColor = .white
         control.selectedSegmentTintColor = .clear
@@ -38,7 +39,7 @@ class KHMenuView: UIView {
             .font: UIFont.boldSystemFont(ofSize: 16)
         ]
         control.setTitleTextAttributes(selectedTextAttributes, for: .selected)
-        control.addTarget(self, action: #selector(segmentValueChanged(_:)), for: .valueChanged)
+        
         return control
     }()
     
@@ -58,27 +59,41 @@ class KHMenuView: UIView {
         return cv
     }()
     
+    // 메뉴 경고
+    let emptyStateLabel: UILabel = {
+        let label = UILabel()
+        label.text = "메뉴가 없습니다"
+        label.textAlignment = .center
+        label.isHidden = true
+        return label
+    }()
+    
     // 카테고리 종류 생성
-    let categories = ["추천메뉴", "커피", "디저트", "스무디", "티", "왜먹어?"]
+    let categories = ["전체", "추천메뉴", "커피", "음료", "디저트", "왜먹어?"]
     
     weak var delegate: KHMenuViewDelegate?
     
     let orderView = OrderSheetController().view
     
-    @objc func segmentValueChanged(_ sender: UISegmentedControl) {
-        delegate?.segmentValueChanged(to: sender.selectedSegmentIndex)
-    }
-    
     // 밑줄 이동 메서드
     func moveUnderline(to index: Int) {
+        guard let title = segmentControl.titleForSegment(at: index) else { return }
+        let attributes: [NSAttributedString.Key: Any] = segmentControl.titleTextAttributes(for: .selected) ?? [:]
+        let titleWidth = (title as NSString).size(withAttributes: attributes).width
         let segmentWidth = segmentControl.frame.width / CGFloat(categories.count)
-        let leadingConstraint = segmentWidth * CGFloat(index)
+        let leadingConstraint = segmentWidth * CGFloat(index) + (segmentWidth - titleWidth) / 2
         UIView.animate(withDuration: 0.3) {
             self.underlineView.snp.updateConstraints {
+                $0.width.equalTo(titleWidth)
                 $0.leading.equalToSuperview().offset(leadingConstraint)
             }
             self.layoutIfNeeded()
         }
+    }
+    
+    // 기존 메서드 유지
+    func updateEmptyState(isEmpty: Bool) {
+        emptyStateLabel.isHidden = !isEmpty
     }
     
     override init(frame: CGRect) {
@@ -114,24 +129,17 @@ class KHMenuView: UIView {
         // 밑줄 Constraints
         underlineView.snp.makeConstraints {
             $0.top.equalTo(segmentControl.snp.bottom)
-            $0.width.equalTo(segmentControl.snp.width).dividedBy(categories.count)
             $0.height.equalTo(2)
             $0.leading.equalToSuperview()
+            $0.width.equalTo(segmentControl.subviews[0].frame.width)
         }
         
         // 컬렉션뷰(메뉴 리스트) Constraints
         collectionView.snp.makeConstraints {
-            $0.top.equalTo(segmentControl.snp.bottom).offset(30)
-            $0.leading.trailing.bottom.equalToSuperview().inset(UIEdgeInsets(top: 0, left: 20, bottom: 30, right: 20))
+            $0.top.equalTo(segmentControl.snp.bottom).offset(20)
+            $0.leading.trailing.equalToSuperview().inset(UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20))
+            $0.height.equalTo(500)
         }
-        
-        // orderView Constraints - 마지막에 추가
-        //        orderView!.snp.makeConstraints {
-        //            $0.bottom.equalToSuperview().inset(20)
-        //            $0.centerX.equalToSuperview()
-        //        }
-        
-        collectionView.register(SBMenuCell.self, forCellWithReuseIdentifier: "img")
         
         // 사용자 상호작용 가능 설정
         orderView!.isUserInteractionEnabled = true
@@ -170,7 +178,7 @@ class SBMenuCell: UICollectionViewCell {
         pl.backgroundColor = .white
         pl.textColor = .black
         pl.clipsToBounds = true
-//        pl.numberOfLines = 0
+        //        pl.numberOfLines = 0
         pl.font = UIFont.systemFont(ofSize: 14, weight: .bold)
         return pl
     }()

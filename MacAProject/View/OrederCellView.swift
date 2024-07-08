@@ -16,12 +16,30 @@ class OrderMakeCell: UITableViewCell {
     let priceLabel = UILabel()
     let addButton = UIButton(type: .system)
     let subtractButton = UIButton(type: .system)
-    let deleteButton = UIButton(type: .system)
+    let removeButton = UIButton(type: .system)
     
+    var plusAction: (() -> Void)?
+    var minusAction: (() -> Void)?
+    var removeAction: (() -> Void)?
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         addSubViews()
         setupConstraints()
+        addButton.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
+        subtractButton.addTarget(self, action: #selector(minusButtonTapped), for: .touchUpInside)
+        removeButton.addTarget(self, action: #selector(minusButtonTapped), for: .touchUpInside)
+    }
+    
+    @objc func addButtonTapped() {
+        plusAction?()
+    }
+    
+    @objc func minusButtonTapped() {
+        minusAction?()
+    }
+    
+    @objc func removeButtonTapped() {
+        minusAction?()
     }
     
     required init?(coder: NSCoder) {
@@ -29,17 +47,16 @@ class OrderMakeCell: UITableViewCell {
     }
     
     func addSubViews() {
-        contentView.addSubview(productImageView)
-        contentView.addSubview(productNameLabel)
-        contentView.addSubview(quantityLabel)
-        contentView.addSubview(priceLabel)
-        contentView.addSubview(addButton)
-        contentView.addSubview(subtractButton)
-        contentView.addSubview(deleteButton)
+        [productImageView, productNameLabel, quantityLabel, addButton, subtractButton, priceLabel, removeButton].forEach{
+            contentView.addSubview($0)
+        }
         
         productImageView.contentMode = .scaleAspectFit
         productNameLabel.font = .boldSystemFont(ofSize: 16)
+        
         quantityLabel.font = .systemFont(ofSize: 16)
+        quantityLabel.textAlignment = .center
+        
         priceLabel.font = .boldSystemFont(ofSize: 18)
         priceLabel.textAlignment = .right
         
@@ -55,13 +72,14 @@ class OrderMakeCell: UITableViewCell {
         subtractButton.backgroundColor = .black
         subtractButton.titleLabel?.font = .boldSystemFont(ofSize: 16)
         
-        deleteButton.setTitle("×", for: .normal)
-        deleteButton.layer.cornerRadius = 2
-        deleteButton.setTitleColor(.systemPink, for: .normal)
-        deleteButton.backgroundColor = #colorLiteral(red: 0.8749070764, green: 0.8814653754, blue: 0.9251363873, alpha: 1)
-        deleteButton.titleLabel?.font = .boldSystemFont(ofSize: 16)
-      
+        removeButton.setTitle("×", for: .normal)
+        removeButton.layer.cornerRadius = 2
+        removeButton.setTitleColor(.systemPink, for: .normal)
+        removeButton.backgroundColor = #colorLiteral(red: 0.8749070764, green: 0.8814653754, blue: 0.9251363873, alpha: 1)
+        removeButton.titleLabel?.font = .boldSystemFont(ofSize: 16)
     }
+    
+    
     
     func setupConstraints() {
         productImageView.snp.makeConstraints {
@@ -76,19 +94,20 @@ class OrderMakeCell: UITableViewCell {
         }
         
         addButton.snp.makeConstraints {
-            $0.leading.equalTo(productNameLabel.snp.leading)
+            $0.leading.equalTo(quantityLabel.snp.trailing)
             $0.top.equalTo(productNameLabel.snp.bottom).offset(10)
             $0.bottom.equalToSuperview().inset(10)
             $0.width.height.equalTo(20)
         }
         
         quantityLabel.snp.makeConstraints {
-            $0.leading.equalTo(addButton.snp.trailing).offset(10)
+            $0.leading.equalTo(subtractButton.snp.trailing)
             $0.centerY.equalTo(addButton.snp.centerY)
+            $0.width.equalTo(50)
         }
         
         subtractButton.snp.makeConstraints {
-            $0.leading.equalTo(quantityLabel.snp.trailing).offset(10)
+            $0.leading.equalTo(productImageView.snp.trailing).offset(10)
             $0.centerY.equalTo(addButton.snp.centerY)
             $0.width.height.equalTo(20)
         }
@@ -99,7 +118,7 @@ class OrderMakeCell: UITableViewCell {
             $0.width.equalTo(80)
         }
         
-        deleteButton.snp.makeConstraints {
+        removeButton.snp.makeConstraints {
             $0.trailing.equalToSuperview().inset(25)
             $0.top.equalToSuperview().inset(15)
             $0.width.height.equalTo(18)
