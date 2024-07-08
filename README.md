@@ -1,15 +1,13 @@
-Thanks for Coming
-👩🏻‍💻팀원
-윤대성
-김솔비
-김광현
-안지현
-이득령
-📓 Github Repository
-https://github.com/qockqock/MacAProject/assets/164954344/e6ed4f99-3e11-4b06-b64d-6d4a9c94f208
+# Thanks for Coming
 
-프로젝트명 : MacA Coffee 키오스크
-프로젝트 소개 : 기본 기능에 충실한 앱 :)
+👩🏻‍💻 **팀원**: 윤대성, 김솔비, 김광현, 안지현, 이득령
+
+📓 **Github Repository**: [https://github.com/qockqock/MacAProject]
+
+## 프로젝트명: MacA Coffee 키오스크
+
+### 프로젝트 소개
+기본 기능에 충실한 앱 :)
 
 ![스크린샷 2024-07-08 오후 12 42 51](https://github.com/qockqock/MacAProject/assets/101637371/b3ae7dc3-bbf1-49d1-9019-cb6de472d6f5)
 ![스크린샷 2024-07-08 오후 12 43 06](https://github.com/qockqock/MacAProject/assets/101637371/c2dab953-7042-4df4-9bf8-2d908e3355d4)
