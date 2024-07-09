@@ -43,7 +43,7 @@ class BasketViewController: UIViewController, UITableViewDataSource, UITableView
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        tableView.reloadData() // 화면이 나타날 때마다 데이터 갱신
+        updateTotalPriceLabel()
     }
     
     //MARK: - 모달 내부에 있는 결제 Btn 함수
@@ -146,6 +146,7 @@ class BasketViewController: UIViewController, UITableViewDataSource, UITableView
     @objc
     func delteAll(){
         Basket.stc.clearAll()
+        updateTotalPriceLabel()
         tableView.reloadData()
         delegate?.didUpdateBasket()
     }
@@ -250,6 +251,7 @@ class BasketViewController: UIViewController, UITableViewDataSource, UITableView
     func updateTotalPriceLabel() {
         let totalPrice = Basket.stc.calculateTotalPrice()
         totalLabel.text = "\(totalPrice)원"
+        tableView.reloadData() // 화면이 나타날 때마다 데이터 갱신
     }
     
     
